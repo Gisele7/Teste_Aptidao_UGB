@@ -1,0 +1,44 @@
+﻿@model Teste_Aptidao_UGB.Model.Models.Usuarios
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<h4>Novo usuário</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label>Matrícula</label>
+                <input asp-for="Usmatricula" class="form-control" />
+                <span asp-validation-for="Usmatricula" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Nome</label>
+                <input asp-for="Usnome" class="form-control" />
+                <span asp-validation-for="Usnome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Departamento</label>
+                <select class="form-select" asp-for="UscodDepartamento" asp-items="@ViewBag.UscodDepartamento">
+                    <option selected value="">Selecione o departamento</option>
+                </select>
+                <span asp-validation-for="UscodDepartamento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar para a lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
