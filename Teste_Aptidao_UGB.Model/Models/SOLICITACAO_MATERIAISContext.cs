@@ -8,10 +8,9 @@ namespace Teste_Aptidao_UGB.Model.Models;
 
 public partial class SOLICITACAO_MATERIAISContext : DbContext
 {
-
     public SOLICITACAO_MATERIAISContext()
     {
-            
+        
     }
     public SOLICITACAO_MATERIAISContext(DbContextOptions<SOLICITACAO_MATERIAISContext> options)
         : base(options)
@@ -46,6 +45,7 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)
     => optionsbuilder.UseSqlServer("data source=localhost\\SQLEXPRESS;Initial Catalog=SOLICITACAO_MATERIAIS;Integrated Security=True; TrustServerCertificate=True");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Departamento>(entity =>
@@ -90,6 +90,7 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
                 .HasMaxLength(200)
                 .IsUnicode(false)
                 .HasColumnName("ENCidade");
+            entity.Property(e => e.EncodFornecedor).HasColumnName("ENCodFornecedor");
             entity.Property(e => e.Encomplemento)
                 .IsUnicode(false)
                 .HasColumnName("ENComplemento");
@@ -101,6 +102,10 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("ENLogradouro");
             entity.Property(e => e.Ennumero).HasColumnName("ENNumero");
+
+            entity.HasOne(d => d.EncodFornecedorNavigation).WithMany(p => p.Endereco)
+                .HasForeignKey(d => d.EncodFornecedor)
+                .HasConstraintName("FK_ENDERECO_FORNECEDORES");
         });
 
         modelBuilder.Entity<Entrada>(entity =>
@@ -146,7 +151,6 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("FOCNPJ");
-            entity.Property(e => e.FocodEndereco).HasColumnName("FOCodEndereco");
             entity.Property(e => e.Foemail)
                 .HasMaxLength(200)
                 .IsUnicode(false)
@@ -163,10 +167,6 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
                 .HasMaxLength(200)
                 .IsUnicode(false)
                 .HasColumnName("FONome");
-
-            entity.HasOne(d => d.FocodEnderecoNavigation).WithMany(p => p.Fornecedores)
-                .HasForeignKey(d => d.FocodEndereco)
-                .HasConstraintName("FK_DBO.FORNECEDORES_DBO.ENDERECO");
         });
 
         modelBuilder.Entity<OrdemCompra>(entity =>

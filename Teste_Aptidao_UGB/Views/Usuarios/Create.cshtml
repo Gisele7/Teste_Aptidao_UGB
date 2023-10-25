@@ -7,38 +7,61 @@
 
 <h4>Novo usuário</h4>
 <hr />
+@{
+    if (ViewData["Mensagem"] != null)
+    {
+        <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-user-plus"></i>&nbsp; Novo usuário</a>
+    }
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label>Matrícula</label>
+                <label asp-for="Usmatricula"></label>
                 <input asp-for="Usmatricula" class="form-control" />
                 <span asp-validation-for="Usmatricula" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label>Nome</label>
+                <label asp-for="Usnome"></label>
                 <input asp-for="Usnome" class="form-control" />
                 <span asp-validation-for="Usnome" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label>Departamento</label>
+                <label asp-for="UscodDepartamento"></label>
                 <select class="form-select" asp-for="UscodDepartamento" asp-items="@ViewBag.UscodDepartamento">
                     <option selected value="">Selecione o departamento</option>
                 </select>
                 <span asp-validation-for="UscodDepartamento" class="text-danger"></span>
             </div>
+            <br/>
             <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
+                <button class="btn-sm btn-success"><i class="fa fa-save"></i>&nbsp; Salvar</button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Voltar para a lista</a>
+    <a asp-action="List">Voltar para a lista</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        var mensagem = "@ViewData["Mensagem"]";
+        var mensagemErro = "@ViewData["MensagemErro"]";
+    </script>
+
+    <script>
+        if (mensagem != "") {
+            MensagemOK(mensagem);
+        }
+        if (mensagemErro != "") {
+            MensagemErro(mensagemErro);
+        }
+    </script>
 }

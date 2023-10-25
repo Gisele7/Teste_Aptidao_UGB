@@ -21,7 +21,9 @@ public partial class Endereco
 
     public string Enestado { get; set; }
 
-    public int? Ennumero { get; set; }
+    public string Ennumero { get; set; }
 
-    public virtual ICollection<Fornecedores> Fornecedores { get; set; } = new List<Fornecedores>();
+    public int? EncodFornecedor { get; set; }
+
+    public virtual Fornecedores EncodFornecedorNavigation { get; set; }
 }

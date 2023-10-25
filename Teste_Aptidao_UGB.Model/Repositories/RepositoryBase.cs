@@ -6,50 +6,57 @@ namespace Teste_Aptidao_UGB.Model.Repositories
 {
     public class RepositoryBase<T> : InterfaceModel<T>, IDisposable where T : class
     {
-        protected SOLICITACAO_MATERIAISContext _DataContext;
-        public bool _SaveChanges = true;
+
+        public  SOLICITACAO_MATERIAISContext _context;
+        public bool _saveChanges = true;
 
         public RepositoryBase(bool saveChanges = true)
         {
-            _SaveChanges = saveChanges;
-            _DataContext = new SOLICITACAO_MATERIAISContext();
+            _saveChanges = saveChanges;
+            _context = new SOLICITACAO_MATERIAISContext();
+        }
+        public T Alterar(T obj)
+        {
+
+            _context.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            if (_saveChanges)
+            {
+                _context.SaveChanges();
+            }
+            return obj;
         }
 
-        public async Task<T> IncluirAsync(T objeto)
+        public async Task<T> AlterarAsync(T obj)
         {
-            await _DataContext.Set<T>().AddAsync(objeto);
-
-            if (_SaveChanges)
+            _context.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            if (_saveChanges)
             {
-                await _DataContext.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
-            return objeto;
-        }
-
-
-        public T Alterar(T objeto)
-        {
-            _DataContext.Entry(objeto).State = EntityState.Modified;
-
-            if (_SaveChanges)
-            {
-                _DataContext.SaveChanges();
-            }
-            return objeto;
+            return obj;
         }
 
         public void Dispose()
         {
-            _DataContext.Dispose();
+            _context.Dispose();
         }
 
-        public void Excluir(T objeto)
+        public void Excluir(T obj)
         {
-            _DataContext.Set<T>().Remove(objeto);
-            if (_SaveChanges)
+            try
             {
-                _DataContext.SaveChanges();
+                _context.Set<T>().Remove(obj);
+                if (_saveChanges)
+                {
+                    _context.SaveChanges();
+                }
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         public void Excluir(params object[] variavel)
@@ -58,29 +65,73 @@ namespace Teste_Aptidao_UGB.Model.Repositories
             Excluir(obj);
         }
 
-        public T Incluir(T objeto)
+        public async Task ExcluirAsync(T obj)
         {
-            _DataContext.Set<T>().Add(objeto);
-            if (_SaveChanges)
+            try
             {
-                _DataContext.SaveChanges();
+                _context.Set<T>().Remove(obj);
+                if (_saveChanges)
+                {
+                    await _context.SaveChangesAsync();
+                }
             }
-            return objeto;
+            catch (Exception)
+            {
+                throw;
+            }
+          
         }
 
-        public void SaveChanges()
+        public async Task ExcluirAsync(params object[] variavel)
         {
-            _DataContext.SaveChanges();
+
+            var obj = await SelecionarPkAsync(variavel);
+            ExcluirAsync(obj);
+        }
+
+        public T Incluir(T obj)
+        {
+            _context.Set<T>().Add(obj);
+            if (_saveChanges)
+            {
+                _context.SaveChanges();
+            }
+
+            return obj;
+        }
+
+        public async Task<T> IncluirAsync(T obj)
+        {
+            _context.Set<T>().AddAsync(obj);
+            if (_saveChanges)
+            {
+                await _context.SaveChangesAsync();
+            }
+            return obj;
         }
 
         public T SelecionarPk(params object[] variavel)
         {
-            return _DataContext.Set<T>().Find(variavel);
+            var obj = _context.Set<T>().Find(variavel);
+            return obj;
+        }
+
+        public async Task<T> SelecionarPkAsync(params object[] variavel)
+        {
+            var obj = await _context.Set<T>().FindAsync(variavel);
+            return obj;
         }
 
         public List<T> SelecionarTodos()
         {
-            return _DataContext.Set<T>().ToList();
+            var obj = _context.Set<T>().ToList();
+            return obj;
+        }
+
+        public async Task<List<T>> SelecionarTodosAsync()
+        {
+            var obj = await _context.Set<T>().ToListAsync();
+            return obj;
         }
     }
 }

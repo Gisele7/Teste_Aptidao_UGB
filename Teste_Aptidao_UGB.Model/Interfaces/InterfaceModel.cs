@@ -8,13 +8,26 @@ namespace Teste_Aptidao_UGB.Model.Interfaces
 {
     public interface InterfaceModel<T> where T : class
     {
-        List<T> SelecionarTodos();
+
+        //metodos sincronos
+        T Incluir(T obj);
+        T Alterar(T obj);
         T SelecionarPk(params object[] variavel);
-        T Incluir(T objeto);
-        T Alterar(T objeto);
-        void Excluir(T objeto);
-        Task<T> IncluirAsync(T objeto);
+        List<T> SelecionarTodos();
+        void Excluir(T obj);
         void Excluir(params object[] variavel);
-        void SaveChanges();
+
+
+        //metodos asincronos
+
+        Task<T> IncluirAsync(T obj);
+        Task<T> AlterarAsync(T obj);
+        Task<T> SelecionarPkAsync(params object[] variavel);
+        Task<List<T>> SelecionarTodosAsync();
+        Task ExcluirAsync(T obj);
+        Task ExcluirAsync(params object[] variavel);
+
+
+
     }
 }

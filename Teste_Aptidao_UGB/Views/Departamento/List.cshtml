@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Teste_Aptidao_UGB.Model.Models.Departamento>
+
+@{
+    ViewData["Title"] = "Lista de departamentos";
+}
+
+<h1>Lista de departamentos</h1>
+<hr />
+<p>
+    <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-building"></i>&nbsp; Novo departamento</a>
+</p>
+<table id="table" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Dedescricao)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dedescricao)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Decodigo" class="btn-sm btn-primary"> <i class="fa fa-folder-open"></i>&nbsp; Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Decodigo" class="btn-sm btn-danger"> <i class="fa fa-trash"></i>&nbsp; Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        ConfiguraDataTable("table")
+    </script>
+}

@@ -11,8 +11,6 @@ public partial class Fornecedores
 
     public string Fonome { get; set; }
 
-    public int? FocodEndereco { get; set; }
-
     public string Focnpj { get; set; }
 
     public string FoinscricaoEstadual { get; set; }
@@ -21,9 +19,9 @@ public partial class Fornecedores
 
     public string Foemail { get; set; }
 
-    public virtual ICollection<Entrada> Entrada { get; set; } = new List<Entrada>();
+    public virtual ICollection<Endereco> Endereco { get; set; } = new List<Endereco>();
 
-    public virtual Endereco FocodEnderecoNavigation { get; set; }
+    public virtual ICollection<Entrada> Entrada { get; set; } = new List<Entrada>();
 
     public virtual ICollection<Servicos> Servicos { get; set; } = new List<Servicos>();
 

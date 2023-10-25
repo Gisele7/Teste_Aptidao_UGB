@@ -3,9 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Novo usuário</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sweetalert2.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dataTables.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/fontawesome/css/all.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Teste_Aptidao_UGB.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -23,7 +26,22 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Create">Usuário</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="List">Usuário</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Departamento" asp-action="List">Departamento</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Unidade" asp-action="List">Unidade</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Produtos" asp-action="List">Produto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Deposito" asp-action="List">Depósitos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Fornecedor" asp-action="List">Fornecedor</a>
                         </li>
                     </ul>
                 </div>
@@ -44,6 +62,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/Funcoes.js"></script>
+    <script src="~/js/sweetalert2@11.js"></script>
+    <script src="~/fontawesome/js/all.min.js"></script>
+    <script src="~/js/dataTables.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
