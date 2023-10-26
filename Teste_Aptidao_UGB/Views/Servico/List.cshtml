@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ServicoVM>
+
+@{
+    ViewData["Title"] = "Lista de serviços";
+}
+
+<h1>Lista de serviços</h1>
+<hr />
+<p>
+    <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-plus"></i>&nbsp; Novo serviço</a>
+</p>
+<table id="table" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fornecedor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrazoEntrega)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fornecedor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrazoEntrega)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Codigo" class="btn-sm btn-primary"> <i class="fa fa-folder-open"></i>&nbsp; Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Codigo" class="btn-sm btn-danger"> <i class="fa fa-trash"></i>&nbsp; Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        ConfiguraDataTable("table")
+    </script>
+}

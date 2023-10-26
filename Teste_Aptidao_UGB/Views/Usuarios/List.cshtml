@@ -40,7 +40,6 @@
                 <td>
                     <a asp-action="Edit" asp-route-matricula="@item.Matricula" class="btn-sm btn-primary"> <i class="fa fa-folder-open"></i>&nbsp; Editar</a>
                     <a asp-action="Delete" asp-route-matricula="@item.Matricula" class="btn-sm btn-danger"> <i class="fa fa-trash"></i>&nbsp; Excluir</a>
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                 </td>
             </tr>
         }

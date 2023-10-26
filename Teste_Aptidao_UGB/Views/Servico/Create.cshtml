@@ -1,0 +1,72 @@
+﻿@model Teste_Aptidao_UGB.Model.Models.Servicos
+
+@{
+    ViewData["Title"] = "Criar novo serviço";
+}
+
+
+<h4>Novo serviço</h4>
+<hr />
+@{
+    if (ViewData["Mensagem"] != null)
+    {
+        <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-user-plus"></i>&nbsp; Novo serviço</a>
+    }
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Senome"></label>
+                <input asp-for="Senome" class="form-control" />
+                <span asp-validation-for="Senome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sedescricao"></label>
+                <input asp-for="Sedescricao" class="form-control" />
+                <span asp-validation-for="Sedescricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecodFornecedor"></label>
+                <select class="form-select" asp-for="SecodFornecedor" asp-items="@ViewBag.SecodFornecedor">
+                    <option selected value="">Selecione o fornecedor</option>
+                </select>
+                <span asp-validation-for="SecodFornecedor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SeprazoEntrega"></label>
+                <input asp-for="SeprazoEntrega" class="form-control" type="datetime-local" />
+                <span asp-validation-for="SeprazoEntrega" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <button class="btn-sm btn-success"><i class="fa fa-save"></i>&nbsp; Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="List">Voltar para a lista</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        var mensagem = "@ViewData["Mensagem"]";
+        var mensagemErro = "@ViewData["MensagemErro"]";
+    </script>
+
+    <script>
+        if (mensagem != "") {
+            MensagemOK(mensagem);
+        }
+        if (mensagemErro != "") {
+            MensagemErro(mensagemErro);
+        }
+    </script>
+}

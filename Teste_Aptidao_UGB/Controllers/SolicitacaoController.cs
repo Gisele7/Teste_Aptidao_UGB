@@ -7,16 +7,25 @@ using Teste_Aptidao_UGB.ViewModel;
 
 namespace Teste_Aptidao_UGB.Controllers
 {
-    public class ServicoController : Controller
+    public class SolicitacaoController : Controller
     {
-        RepositoryFornecedor _RepositoryFornecedor = new RepositoryFornecedor();
+        RepositoryProdutos _RepositoryProdutos = new RepositoryProdutos();
+        RepositoryDepartamento _RepositoryDepartamento = new RepositoryDepartamento();
+        RepositoryUsuario _RepositoryUsuario = new RepositoryUsuario();
         RepositoryServico _RepositoryServico = new RepositoryServico();
+        RepositoryFornecedor _RepositoryFornecedor = new RepositoryFornecedor();
+        RepositorySolicitacao _RepositorySolicitacao = new RepositorySolicitacao();
+
         /// <summary>
         /// Preenche a lista de fornecedores, para utilizar no selectList das telas de create e edit
         /// </summary>
         public void CarregaViewBag()
         {
-            ViewData["SecodFornecedor"] = new SelectList(_RepositoryFornecedor.SelecionarTodos(), "Focodigo", "Fonome");
+            ViewData["SocodProduto"] = new SelectList(_RepositoryProdutos.SelecionarTodos(), "PrcodigoEan", "Prdescricao");
+            ViewData["SocodDepartamento"] = new SelectList(_RepositoryDepartamento.SelecionarTodos(), "Decodigo", "Dedescricao");
+            ViewData["SocodUsuario"] = new SelectList(_RepositoryUsuario.SelecionarTodos(), "Usmatricula", "Usnome");
+            ViewData["SocodServico"] = new SelectList(_RepositoryServico.SelecionarTodos(), "Secodigo", "Senome");
+            ViewData["SocodFornecedor"] = new SelectList(_RepositoryFornecedor.SelecionarTodos(), "Focodigo", "Fonome");
         }
         public IActionResult Create()
         {
@@ -25,21 +34,21 @@ namespace Teste_Aptidao_UGB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Servicos servico)
+        public async Task<IActionResult> Create(Solicitacao solicitacao)
         {
             try
             {
                 CarregaViewBag();
                 if (ModelState.IsValid)
                 {
-                    await _RepositoryServico.IncluirAsync(servico);
+                    await _RepositorySolicitacao.IncluirAsync(solicitacao);
                     ViewData["Mensagem"] = Mensagens.MensagemOK;
-                    return View(servico);
+                    return View(solicitacao);
                 }
                 else
                 {
                     ViewData["MensagemErro"] = Mensagens.MensagemErro;
-                    return View(servico);
+                    return View(solicitacao);
                 }
             }
             catch (Exception ex)
@@ -51,32 +60,26 @@ namespace Teste_Aptidao_UGB.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             CarregaViewBag();
-            var servico = await _RepositoryServico.SelecionarPkAsync(id);
-            return View(servico);
-        }
-
-        public async Task<IActionResult> ListarServicosPorFornecedor (int codFornecedor)
-        {
-            var servicos = await ServicoVM.ListServicosPorFornecedorAsync(codFornecedor);
-            return new JsonResult(new { data = servicos });
+            var solicitacao = await _RepositorySolicitacao.SelecionarPkAsync(id);
+            return View(solicitacao);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Servicos servico)
+        public async Task<IActionResult> Edit(Solicitacao solicitacao)
         {
             try
             {
                 CarregaViewBag();
                 if (ModelState.IsValid)
                 {
-                    await _RepositoryServico.AlterarAsync(servico);
+                    await _RepositorySolicitacao.AlterarAsync(solicitacao);
                     ViewData["Mensagem"] = Mensagens.MensagemOK;
-                    return View(servico);
+                    return View(solicitacao);
                 }
                 else
                 {
                     ViewData["MensagemErro"] = Mensagens.MensagemErro;
-                    return View(servico);
+                    return View(solicitacao);
                 }
             }
             catch (Exception ex)
@@ -85,9 +88,9 @@ namespace Teste_Aptidao_UGB.Controllers
             }
         }
 
-        public async Task<IActionResult> List()
+        public IActionResult List()
         {
-            var list = await ServicoVM.ListServicosAsync();
+            var list = SolicitacaoVM.ListSolicitacoesAsync();
             return View(list);
         }
 
