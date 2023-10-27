@@ -18,4 +18,10 @@ public partial class Saida
     public DateTime? Sadata { get; set; }
 
     public int? Saquantidade { get; set; }
+
+    public virtual Departamento SacodDepartamentoNavigation { get; set; }
+
+    public virtual Produtos SacodProdutoNavigation { get; set; }
+
+    public virtual Usuarios SacodUsuarioNavigation { get; set; }
 }

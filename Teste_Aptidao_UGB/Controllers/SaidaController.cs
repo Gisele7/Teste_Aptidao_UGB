@@ -7,25 +7,22 @@ using Teste_Aptidao_UGB.ViewModel;
 
 namespace Teste_Aptidao_UGB.Controllers
 {
-    public class SolicitacaoController : Controller
+    public class SaidaController : Controller
     {
+        RepositoryUsuario _RepositoryUsuario = new RepositoryUsuario();
         RepositoryProdutos _RepositoryProdutos = new RepositoryProdutos();
         RepositoryDepartamento _RepositoryDepartamento = new RepositoryDepartamento();
-        RepositoryUsuario _RepositoryUsuario = new RepositoryUsuario();
-        RepositoryServico _RepositoryServico = new RepositoryServico();
-        RepositoryFornecedor _RepositoryFornecedor = new RepositoryFornecedor();
-        RepositorySolicitacao _RepositorySolicitacao = new RepositorySolicitacao();
+        RepositorySaida _RepositorySaida = new RepositorySaida();
+
 
         /// <summary>
         /// Preenche a lista dos selects, para utilizar no selectList das telas de create e edit
         /// </summary>
         public void CarregaViewBag()
         {
-            ViewData["SocodProduto"] = new SelectList(_RepositoryProdutos.SelecionarTodos(), "PrcodigoEan", "Prdescricao");
-            ViewData["SocodDepartamento"] = new SelectList(_RepositoryDepartamento.SelecionarTodos(), "Decodigo", "Dedescricao");
-            ViewData["SocodUsuario"] = new SelectList(_RepositoryUsuario.SelecionarTodos(), "Usmatricula", "Usnome");
-            ViewData["SocodServico"] = new SelectList(_RepositoryServico.SelecionarTodos(), "Secodigo", "Senome");
-            ViewData["SocodFornecedor"] = new SelectList(_RepositoryFornecedor.SelecionarTodos(), "Focodigo", "Fonome");
+            ViewData["SacodUsuario"] = new SelectList(_RepositoryUsuario.SelecionarTodos(), "Usmatricula", "Usnome");
+            ViewData["SacodProduto"] = new SelectList(_RepositoryProdutos.SelecionarTodos(), "PrcodigoEan", "Prdescricao");
+            ViewData["SacodDepartamento"] = new SelectList(_RepositoryDepartamento.SelecionarTodos(), "Decodigo", "Dedescricao");
         }
         public IActionResult Create()
         {
@@ -34,21 +31,21 @@ namespace Teste_Aptidao_UGB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Solicitacao solicitacao)
+        public async Task<IActionResult> Create(Saida saida)
         {
             try
             {
                 CarregaViewBag();
                 if (ModelState.IsValid)
                 {
-                    await _RepositorySolicitacao.IncluirAsync(solicitacao);
+                    await _RepositorySaida.IncluirAsync(saida);
                     ViewData["Mensagem"] = Mensagens.MensagemOK;
-                    return View(solicitacao);
+                    return View(saida);
                 }
                 else
                 {
                     ViewData["MensagemErro"] = Mensagens.MensagemErro;
-                    return View(solicitacao);
+                    return View(saida);
                 }
             }
             catch (Exception ex)
@@ -60,26 +57,26 @@ namespace Teste_Aptidao_UGB.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             CarregaViewBag();
-            var solicitacao = await _RepositorySolicitacao.SelecionarPkAsync(id);
-            return View(solicitacao);
+            var saida = await _RepositorySaida.SelecionarPkAsync(id);
+            return View(saida);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Solicitacao solicitacao)
+        public async Task<IActionResult> Edit(Saida saida)
         {
             try
             {
                 CarregaViewBag();
                 if (ModelState.IsValid)
                 {
-                    await _RepositorySolicitacao.AlterarAsync(solicitacao);
+                    await _RepositorySaida.AlterarAsync(saida);
                     ViewData["Mensagem"] = Mensagens.MensagemOK;
-                    return View(solicitacao);
+                    return View(saida);
                 }
                 else
                 {
                     ViewData["MensagemErro"] = Mensagens.MensagemErro;
-                    return View(solicitacao);
+                    return View(saida);
                 }
             }
             catch (Exception ex)
@@ -88,9 +85,9 @@ namespace Teste_Aptidao_UGB.Controllers
             }
         }
 
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            var list = SolicitacaoVM.ListSolicitacoesAsync();
+            var list = await SaidaVM.ListSaidasAsync();
             return View(list);
         }
 
@@ -98,7 +95,7 @@ namespace Teste_Aptidao_UGB.Controllers
         {
             try
             {
-                await _RepositoryServico.ExcluirAsync(id);
+                await _RepositorySaida.ExcluirAsync(id);
                 return RedirectToAction("List", new { mensagem = Mensagens.MensagemExclusao });
             }
             catch (Exception ex)

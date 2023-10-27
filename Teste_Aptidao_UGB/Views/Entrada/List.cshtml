@@ -1,0 +1,71 @@
+﻿@model IEnumerable<EntradaVM>
+
+@{
+    ViewData["Title"] = "Lista de entradas";
+}
+
+<h1>Lista de entradas</h1>
+<hr />
+<p>
+    <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-user-plus"></i>&nbsp; Novoa entrada</a>
+</p>
+<table id="table" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NotaFiscal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deposito)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fornecedor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NotaFiscal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deposito)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fornecedor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Produto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantidade)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Codigo" class="btn-sm btn-primary"> <i class="fa fa-folder-open"></i>&nbsp; Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Codigo" class="btn-sm btn-danger"> <i class="fa fa-trash"></i>&nbsp; Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        ConfiguraDataTable("table")
+    </script>
+}

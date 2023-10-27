@@ -7,9 +7,9 @@ namespace Teste_Aptidao_UGB.Controllers
     public class AutoCompleteController : Controller
     {
         public async Task<JsonResult> SearchProduto(string termo)
-        {
+         {
             RepositoryProdutos _RepositoryProdutos = new RepositoryProdutos();
-            List<Produtos> oLista = await _RepositoryProdutos.ListarProdutoPorDescricao(termo);
+            List<Produtos> oLista = await _RepositoryProdutos.ListarProdutoPorCodigoOuDescricao(termo);
             return new JsonResult(oLista);
         }
 

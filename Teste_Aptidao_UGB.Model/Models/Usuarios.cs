@@ -13,6 +13,8 @@ public partial class Usuarios
 
     public int? UscodDepartamento { get; set; }
 
+    public virtual ICollection<Saida> Saida { get; set; } = new List<Saida>();
+
     public virtual ICollection<Solicitacao> Solicitacao { get; set; } = new List<Solicitacao>();
 
     public virtual Departamento UscodDepartamentoNavigation { get; set; }

@@ -44,7 +44,7 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
     public virtual DbSet<Usuarios> Usuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)
-    => optionsbuilder.UseSqlServer("data source=localhost\\SQLEXPRESS;Initial Catalog=SOLICITACAO_MATERIAIS;Integrated Security=True; TrustServerCertificate=True");
+  => optionsbuilder.UseSqlServer("data source=localhost\\SQLEXPRESS;Initial Catalog=SOLICITACAO_MATERIAIS;Integrated Security=True; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -101,7 +101,10 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
             entity.Property(e => e.Enlogradouro)
                 .IsUnicode(false)
                 .HasColumnName("ENLogradouro");
-            entity.Property(e => e.Ennumero).HasColumnName("ENNumero");
+            entity.Property(e => e.Ennumero)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("ENNumero");
 
             entity.HasOne(d => d.EncodFornecedorNavigation).WithMany(p => p.Endereco)
                 .HasForeignKey(d => d.EncodFornecedor)
@@ -241,6 +244,18 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("SAData");
             entity.Property(e => e.Saquantidade).HasColumnName("SAQuantidade");
+
+            entity.HasOne(d => d.SacodDepartamentoNavigation).WithMany(p => p.Saida)
+                .HasForeignKey(d => d.SacodDepartamento)
+                .HasConstraintName("FK_SAIDA_DEPARTAMENTO");
+
+            entity.HasOne(d => d.SacodProdutoNavigation).WithMany(p => p.Saida)
+                .HasForeignKey(d => d.SacodProduto)
+                .HasConstraintName("FK_SAIDA_PRODUTOS");
+
+            entity.HasOne(d => d.SacodUsuarioNavigation).WithMany(p => p.Saida)
+                .HasForeignKey(d => d.SacodUsuario)
+                .HasConstraintName("FK_SAIDA_USUARIOS");
         });
 
         modelBuilder.Entity<Servicos>(entity =>

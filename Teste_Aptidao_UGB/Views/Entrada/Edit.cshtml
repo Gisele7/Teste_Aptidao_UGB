@@ -1,0 +1,103 @@
+﻿@model Teste_Aptidao_UGB.Model.Models.Entrada
+
+@{
+    ViewData["Title"] = "Editar entrada";
+}
+
+
+<h4>Editar entrada</h4>
+<hr />
+@{
+    if (ViewData["Mensagem"] != null)
+    {
+        <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-user-plus"></i>&nbsp; Editar entrada</a>
+    }
+}
+<div class="row">
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="EtnotaFiscal"></label>
+            <input asp-for="EtnotaFiscal" class="form-control" />
+            <span asp-validation-for="EtnotaFiscal" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Etdata"></label>
+            <input asp-for="Etdata" class="form-control" type="datetime-local" />
+            <span asp-validation-for="Etdata" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EtcodDeposito"></label>
+            <select class="form-select" asp-for="EtcodDeposito" asp-items="@ViewBag.EtcodDeposito">
+                <option selected value="">Selecione o depósito</option>
+            </select>
+            <span asp-validation-for="EtcodDeposito" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EtcodFornecedor"></label>
+            <select class="form-select" asp-for="EtcodFornecedor" asp-items="@ViewBag.EtcodFornecedor">
+                <option selected value="">Selecione o fornecedor</option>
+            </select>
+            <span asp-validation-for="EtcodFornecedor" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Etquantidade"></label>
+            <input asp-for="Etquantidade" class="form-control" type="number" />
+            <span asp-validation-for="Etquantidade" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EtcodProduto"></label>
+            <div class="col-md" id="remoteProduto">
+                <input id="produto" type="text" class="form-control typeahead" />
+                <input asp-for="EtcodProduto" type="hidden" class="form-control" />
+                <span asp-validation-for="EtcodProduto" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <button class="btn-sm btn-success"><i class="fa fa-save"></i>&nbsp; Salvar</button>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="List">Voltar para a lista</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        var mensagem = "@ViewData["Mensagem"]";
+        var mensagemErro = "@ViewData["MensagemErro"]";
+        const urlProdutos = "@Url.Action("SearchProduto", "AutoComplete")";
+    </script>
+
+    <script>
+        if (mensagem != "") {
+            MensagemOK(mensagem);
+        }
+        if (mensagemErro != "") {
+            MensagemErro(mensagemErro);
+        }
+        var produtos = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: urlProdutos + "?termo=%QUERY",
+                wildcard: '%QUERY',
+            }
+        });
+
+        console.log('produtos', produtos)
+
+        $('#remoteProduto .typeahead').typeahead(null, {
+            name: 'produto',
+            display: 'prdescricao',
+            source: produtos
+        })
+
+    </script>
+}
