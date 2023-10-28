@@ -21,7 +21,5 @@ public partial class Produtos
 
     public virtual Unidade PrcodUnidadeNavigation { get; set; }
 
-    public virtual ICollection<Saida> Saida { get; set; } = new List<Saida>();
-
     public virtual ICollection<Solicitacao> Solicitacao { get; set; } = new List<Solicitacao>();
 }

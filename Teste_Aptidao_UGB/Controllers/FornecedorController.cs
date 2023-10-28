@@ -57,7 +57,8 @@ namespace Teste_Aptidao_UGB.Controllers
             }
             catch (Exception ex)
             {
-                return View(ex);
+                ViewData["MensagemErro"] = ex.Message;
+                return View(fornecedorVM);
             }
         }
 
@@ -76,6 +77,7 @@ namespace Teste_Aptidao_UGB.Controllers
                 {
                     var fornecedor = new Fornecedores()
                     {
+                        Focodigo = fornecedorVM.Codigo,
                         Focnpj = fornecedorVM.CNPJ,
                         Foemail = fornecedorVM.Email,
                         FoinscricaoEstadual = fornecedorVM.InscricaoEstadual,
@@ -95,7 +97,7 @@ namespace Teste_Aptidao_UGB.Controllers
                     };
 
                     fornecedor.Endereco.Add(endereco);
-                    await _RepositoryFornecedor.AlterarAsync(fornecedor);
+                    await _RepositoryFornecedor.AlterarAsync(fornecedor, fornecedor.Endereco.FirstOrDefault()!);
                     ViewData["Mensagem"] = Mensagens.MensagemOK;
                     return View(fornecedorVM);
                 }
@@ -107,7 +109,8 @@ namespace Teste_Aptidao_UGB.Controllers
             }
             catch (Exception ex)
             {
-                return View(ex);
+                ViewData["MensagemErro"] = ex.Message;
+                return View(fornecedorVM);
             }
         }
 

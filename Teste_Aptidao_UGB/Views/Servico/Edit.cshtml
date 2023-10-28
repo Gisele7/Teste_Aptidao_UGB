@@ -40,6 +40,11 @@
                 <span asp-validation-for="SecodFornecedor" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Sevalor"></label>
+                <input asp-for="Sevalor" class="form-control" />
+                <span asp-validation-for="Sevalor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="SeprazoEntrega"></label>
                 <input asp-for="SeprazoEntrega" class="form-control" type="datetime" />
                 <span asp-validation-for="SeprazoEntrega" class="text-danger"></span>
@@ -67,6 +72,7 @@
     </script>
 
     <script>
+        //Lógica utilizada para exibir as mensagens de sucesso ou erro ao salvar os dados.
         if (mensagem != "") {
             MensagemOK(mensagem);
         }

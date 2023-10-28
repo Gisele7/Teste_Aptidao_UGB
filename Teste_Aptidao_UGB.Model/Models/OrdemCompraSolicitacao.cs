@@ -13,6 +13,10 @@ public partial class OrdemCompraSolicitacao
 
     public int? OscodSolicitacao { get; set; }
 
+    public DateTime? OsdataEntrega { get; set; }
+
+    public int? Osquantidade { get; set; }
+
     public virtual OrdemCompra OscodOrdemCompraNavigation { get; set; }
 
     public virtual Solicitacao OscodSolicitacaoNavigation { get; set; }

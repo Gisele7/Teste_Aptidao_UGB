@@ -8,6 +8,7 @@ namespace Teste_Aptidao_UGB.Model.Models;
 
 public partial class SOLICITACAO_MATERIAISContext : DbContext
 {
+
     public SOLICITACAO_MATERIAISContext()
     {
         
@@ -43,8 +44,10 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
 
     public virtual DbSet<Usuarios> Usuarios { get; set; }
 
+    public virtual DbSet<VwEstoque> VwEstoque { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)
-  => optionsbuilder.UseSqlServer("data source=localhost\\SQLEXPRESS;Initial Catalog=SOLICITACAO_MATERIAIS;Integrated Security=True; TrustServerCertificate=True");
+=> optionsbuilder.UseSqlServer("data source=localhost\\SQLEXPRESS;Initial Catalog=SOLICITACAO_MATERIAIS;Integrated Security=True; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -197,9 +200,14 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
             entity.Property(e => e.Oscodigo).HasColumnName("OSCodigo");
             entity.Property(e => e.OscodOrdemCompra).HasColumnName("OSCodOrdemCompra");
             entity.Property(e => e.OscodSolicitacao).HasColumnName("OSCodSolicitacao");
+            entity.Property(e => e.OsdataEntrega)
+                .HasColumnType("datetime")
+                .HasColumnName("OSDataEntrega");
+            entity.Property(e => e.Osquantidade).HasColumnName("OSQuantidade");
 
             entity.HasOne(d => d.OscodOrdemCompraNavigation).WithMany(p => p.OrdemCompraSolicitacao)
                 .HasForeignKey(d => d.OscodOrdemCompra)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_DBO.ORDEM_COMPRA_SOLICITACAO_DBO.ORDEM_COMPRA");
 
             entity.HasOne(d => d.OscodSolicitacaoNavigation).WithMany(p => p.OrdemCompraSolicitacao)
@@ -244,18 +252,6 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("SAData");
             entity.Property(e => e.Saquantidade).HasColumnName("SAQuantidade");
-
-            entity.HasOne(d => d.SacodDepartamentoNavigation).WithMany(p => p.Saida)
-                .HasForeignKey(d => d.SacodDepartamento)
-                .HasConstraintName("FK_SAIDA_DEPARTAMENTO");
-
-            entity.HasOne(d => d.SacodProdutoNavigation).WithMany(p => p.Saida)
-                .HasForeignKey(d => d.SacodProduto)
-                .HasConstraintName("FK_SAIDA_PRODUTOS");
-
-            entity.HasOne(d => d.SacodUsuarioNavigation).WithMany(p => p.Saida)
-                .HasForeignKey(d => d.SacodUsuario)
-                .HasConstraintName("FK_SAIDA_USUARIOS");
         });
 
         modelBuilder.Entity<Servicos>(entity =>
@@ -275,6 +271,9 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
             entity.Property(e => e.SeprazoEntrega)
                 .HasColumnType("datetime")
                 .HasColumnName("SEPrazoEntrega");
+            entity.Property(e => e.Sevalor)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("SEValor");
 
             entity.HasOne(d => d.SecodFornecedorNavigation).WithMany(p => p.Servicos)
                 .HasForeignKey(d => d.SecodFornecedor)
@@ -354,6 +353,18 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
             entity.HasOne(d => d.UscodDepartamentoNavigation).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.UscodDepartamento)
                 .HasConstraintName("FK_DBO.USUARIOS_DBO.DEPARTAMENTO");
+        });
+
+        modelBuilder.Entity<VwEstoque>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_ESTOQUE");
+
+            entity.Property(e => e.EtcodProduto).HasColumnName("ETCodProduto");
+            entity.Property(e => e.Prdescricao)
+                .IsUnicode(false)
+                .HasColumnName("PRDescricao");
         });
 
         OnModelCreatingPartial(modelBuilder);

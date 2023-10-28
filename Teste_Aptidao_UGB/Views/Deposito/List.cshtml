@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-building"></i>&nbsp; Novo depósito</a>
 </p>
-<table class="table">
+<table id="table" class="table">
     <thead>
         <tr>
             <th>
@@ -22,19 +22,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Decodigo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dedescricao)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Decodigo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dedescricao)
+                </td>
+                <td>
                     <a asp-action="Edit" asp-route-id="@item.Decodigo" class="btn-sm btn-primary"> <i class="fa fa-folder-open"></i>&nbsp; Editar</a>
                     <a asp-action="Delete" asp-route-id="@item.Decodigo" class="btn-sm btn-danger"> <i class="fa fa-trash"></i>&nbsp; Excluir</a>
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@section Scripts{
+    <script>
+        //Rotina que configura a tabela para ser exibida como um DataTable.
+        ConfiguraDataTable("table")
+    </script>
+}

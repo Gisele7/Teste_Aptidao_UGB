@@ -66,9 +66,13 @@
       {
          "Name": "[dbo].[USUARIOS]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VW_ESTOQUE]",
+         "ObjectType": 3
       }
    ],
-   "UiHint": "res700893\\sqlexpress.SOLICITACAO_MATERIAIS.dbo",
+   "UiHint": "desktop-kjko9s7\\sqlexpress.SOLICITACAO_MATERIAIS.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,

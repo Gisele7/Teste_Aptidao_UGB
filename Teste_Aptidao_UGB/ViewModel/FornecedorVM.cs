@@ -106,7 +106,7 @@ namespace Teste_Aptidao_UGB.ViewModel
                               Complemento = endereco.Encomplemento,
                               Estado = endereco.Enestado,
                               Numero = endereco.Ennumero
-                          }).FirstOrDefaultAsync();
+                          })!.FirstOrDefaultAsync();
         }
     }
 }

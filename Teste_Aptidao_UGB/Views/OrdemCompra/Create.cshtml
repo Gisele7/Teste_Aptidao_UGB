@@ -1,0 +1,207 @@
+﻿@model Teste_Aptidao_UGB.ViewModel.OrdemCompraVM
+
+@{
+    ViewData["Title"] = "Nova ordem de compra";
+}
+
+
+<h4>Nova ordem de compra</h4>
+<hr />
+@{
+    if (ViewData["Mensagem"] != null)
+    {
+        <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-plus"></i>&nbsp; Nova ordem de compra</a>
+    }
+}
+<div class="row">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="CodigoFornecedor"></label>
+            <select class="form-select" asp-for="CodigoFornecedor" asp-items="@ViewBag.CodigoFornecedor">
+                <option selected value="">Selecione o fornecedor</option>
+            </select>
+            <span asp-validation-for="CodigoFornecedor" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Data" class="control-label"></label>
+            <input asp-for="Data" class="form-control" type="date" />
+            <span asp-validation-for="Data" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Número da solicitação</label>
+            <input id="numeroSolicitacao" class="form-control" type="number" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Produto</label>
+            <input type="text" id="produto" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Quantidade</label>
+            <input type="number" id="quantidade" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Valor unitário</label>
+            <input type="text" id="valorUnitario" readonly />
+        </div>
+        <div class="form-group">
+            <input type="button" value="Adicionar" class="btn btn-primary" onclick="Adicionar()" />
+        </div>
+
+        <table id="table" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Pedido
+                    </th>
+                    <th>
+                        Quantidade Requisitada
+                    </th>
+                    <th>
+                        Descrição
+                    </th>
+                    <th>
+                        Data Entrega
+                    </th>
+                    <th>
+                        Unidade
+                    </th>
+                    <th>
+                        Quantidade
+                    </th>
+                    <th>
+                        Valor
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                    <th>
+                        Código EAN
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var contador = 0;
+                }
+                @foreach (var item in Model.Solicitacoes)
+                {
+                    <tr>
+                        <td>
+                            <input type="hidden" name="Solicitacoes[@contador].Codigo" value="@item.Codigo" />
+                            @Html.DisplayFor(modelItem => item.Codigo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantidadeRequisitada)
+                        </td>
+                        <td>
+                            @{
+                                if(item.IsServico == true)
+                                {
+                                    @Html.DisplayFor(modelItem => item.Servico)
+                                }
+                                else
+                                {
+                                @Html.DisplayFor(modelItem => item.Produto)
+                                }
+                            }
+                        </td>
+                        <td>
+                            <input type="date" name="Solicitacoes[@contador].DataEntrega" class="DataEntrega" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Unidade)
+                        </td>
+                        <td>
+                            <input type="number" name="Solicitacoes[@contador].Quantidade" class="Quantidade" />
+                        </td>
+                        <td>
+                           <label id="valorUnitario" class="valorUnitario">@item.ValorUnitario</label>
+                        </td>
+                        <td>
+                            <label id="valorTotal"></label>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CodigoProduto)
+                        </td>
+                        <td>
+                            <button type="button" class="btn-sm btn-danger remover"><i class="fa fa-trash"></i>&nbsp; Excluir</button>
+                        </td>
+                    </tr>
+                    contador += 1;
+                }
+            </tbody>
+        </table>
+        <button>Solicitar ao fornecedor</button>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar para a lista</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        var urlSolicitacao = "@Url.Action("GetSolicitacao", "ConsultaSolicitacao")";
+        var dados;
+    </script>
+
+    <script>
+        //Lógica utilizada para exibir as mensagens de sucesso ou erro ao salvar os dados.
+        //if (mensagem != "") {
+        //    MensagemOK(mensagem);
+        //}
+        //if (mensagemErro != "") {
+        //    MensagemErro(mensagemErro);
+        //}
+
+        $("#numeroSolicitacao").on("blur", function () {
+            var solicitacao = $(this).val();
+            console.log(solicitacao)
+            if (solicitacao != "") {
+                $.get(urlSolicitacao + "?codigoSolicitacao=" + solicitacao, function (data) {
+                    dados = data;
+                    $("#codigo").val(data.codigoProduto);
+                    $("#produto").val(data.produto);
+                    $("#quantidade").val(data.quantidade);
+                    $("#valorUnitario").val(data.valorUnitario);
+                })
+            }
+        })
+
+        $("#table").on("blur",".Quantidade", function(){
+            var linha = $(this).closest("tr");
+            var quantidade  = $(this).val();
+            var valor = $(linha).find("#valorUnitario").text();
+            var valorTotal = parseFloat(quantidade) * parseFloat(valor);
+            $(linha).find('#valorTotal').text(valorTotal);
+            console.log("valor", valor);
+        })
+        function Adicionar() {
+            var contador = $("#table tbody tr").length;
+            var linha = `<tr><td>${dados.codigo}<input type="hidden" name="Solicitacoes[${contador}].Codigo" value="${dados.codigo}" /></td><td>${dados.quantidadeRequisitada}</td><td>${dados.produto}</td><td><input type="date" class="DataEntrega" name="solicitacoes[${contador}].DataEntrega"/></td>` +
+                `<td>${dados.unidade}</td><td> <input type="number" class="Quantidade" name="Solicitacoes[${contador}].Quantidade"/></td><td><label id="valorUnitario">${dados.valorUnitario}</label></td><td><label id="valorTotal"></label></td>` +
+                `<td>${dados.codigoProduto}</td><td><button type="button" class="btn-sm btn-danger remover"><i class="fa fa-trash"></i>&nbsp; Excluir</button></td>`;
+
+            $("#table tbody").append(linha);
+        }
+
+        //Apaga o dado da tabela e atualiza o index da linha
+        $("#table").on("click", ".remover", function () {
+            $(this).closest("tr").remove();
+            var linhas = $("table tbody ").find("tr");
+            linhas.each(function (index) {
+                $(this).find(".DataEntrega").attr("name", `Solicitacoes[${index}].DataEntrega`);
+                $(this).find(".Quantidade").attr("name", `Solicitacoes[${index}].Quantidade`);
+            });
+        });
+
+
+
+    </script>
+}

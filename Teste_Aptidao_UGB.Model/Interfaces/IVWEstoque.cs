@@ -2,7 +2,7 @@
 
 namespace Teste_Aptidao_UGB.Model.Interfaces
 {
-    internal interface IOrdemCompraSolicitacao : InterfaceModel<OrdemCompraSolicitacao>
+    internal interface IVWEstoque : InterfaceModel<VwEstoque>
     {
     }
 }

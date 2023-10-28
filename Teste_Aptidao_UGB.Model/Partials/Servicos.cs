@@ -25,6 +25,11 @@ namespace Teste_Aptidao_UGB.Model.Models
             [Required(ErrorMessage = "Este campo é obrigatório.")]
             public string Sedescricao { get; set; }
 
+            [Display(Name = "Valor")]
+            [Required(ErrorMessage = "Este campo é obrigatório.")]
+            public string Sevalor { get; set; }
+
+
             [Display(Name = "Fornecedor")]
             [Required(ErrorMessage = "Este campo é obrigatório.")]
             public int? SecodFornecedor { get; set; }

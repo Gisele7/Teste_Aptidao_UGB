@@ -69,7 +69,8 @@ namespace Teste_Aptidao_UGB.ViewModel
                     Fornecedor = db.Fornecedores.FirstOrDefault(x => x.Focodigo == item.EtcodFornecedor).Fonome,
                     Produto = db.Produtos.FirstOrDefault(x => x.PrcodigoEan == item.EtcodProduto).Prdescricao,
                     NotaFiscal = item.EtnotaFiscal,
-                    Quantidade = item.Etquantidade
+                    Quantidade = item.Etquantidade,
+                    Codigo = item.Etcodigo
 
                 };
 

@@ -50,7 +50,8 @@ namespace Teste_Aptidao_UGB.Controllers
             }
             catch (Exception ex)
             {
-                return View(ex);
+                ViewData["MensagemErro"] = ex.Message;
+                return View(entrada);
             }
         }
 
@@ -81,7 +82,8 @@ namespace Teste_Aptidao_UGB.Controllers
             }
             catch (Exception ex)
             {
-                return View(ex);
+                ViewData["MensagemErro"] = ex.Message;
+                return View(entrada);
             }
         }
 

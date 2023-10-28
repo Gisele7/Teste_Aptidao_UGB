@@ -56,6 +56,7 @@ namespace Teste_Aptidao_UGB.ViewModel
             {
                 SaidaVM saidaVM = new SaidaVM()
                 {
+                    Codigo = item.Sacodigo,
                     CodigoDepartamento = item.SacodDepartamento,
                     CodigoProduto = item.SacodProduto,
                     CodigoUsuario = item.SacodUsuario,

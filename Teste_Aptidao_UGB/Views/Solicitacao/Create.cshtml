@@ -10,7 +10,7 @@
 @{
     if (ViewData["Mensagem"] != null)
     {
-        <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-plus"></i>&nbsp; Nova solicitação</a>
+    <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-plus"></i>&nbsp; Nova solicitação</a>
     }
 }
 <form asp-action="Create">
@@ -28,11 +28,11 @@
             <label asp-for="SocodProduto"></label>
             <div class="col-md" id="remoteProduto">
                 <input type="text" id="produto" class="form-control typeahead" />
-                <input asp-for="SocodProduto" type="hidden" class="form-control"  />
+                <input asp-for="SocodProduto" type="hidden" class="form-control" />
                 <span asp-validation-for="SocodProduto" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-md-4" id="selectFornecedor" style="display: none">
+        <div class="col-md-4" id="selectFornecedor">
             <label asp-for="SocodFornecedor"></label>
             <div class="col-md" id="remoteFornecedor">
                 <input id="fornecedor" type="text" class="form-control typeahead" />
@@ -82,7 +82,7 @@
     <div class="form-group row">
         <div class="col-md">
             <label asp-for="Soobservacao"></label>
-            <input asp-for="Soobservacao" class="form-control"  />
+            <input asp-for="Soobservacao" class="form-control" />
             <span asp-validation-for="Soobservacao" class="text-danger"></span>
         </div>
     </div>
@@ -96,7 +96,15 @@
 <div>
     <a asp-action="List">Voltar para a lista</a>
 </div>
+@{
+    var solicitacao = new Teste_Aptidao_UGB.Model.Models.Solicitacao();
+    if (Model != null)
+    {
+        solicitacao = Model;
+    }
 
+
+}
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -108,9 +116,12 @@
         const urlProdutos = "@Url.Action("SearchProduto", "AutoComplete")";
         const urlFornecedores = "@Url.Action("SearchFornecedores", "AutoComplete")";
         const urlCarregaServicos = "@Url.Action("ListarServicosPorFornecedor", "Servico")";
+        const produto = "@solicitacao.SocodProduto";
+        const fornecedor = "@solicitacao.SocodFornecedor";
     </script>
 
     <script>
+        //Lógica utilizada para exibir as mensagens de sucesso ou erro ao salvar os dados.
         if (mensagem != "") {
             MensagemOK(mensagem);
         }
@@ -118,6 +129,11 @@
             MensagemErro(mensagemErro);
         }
 
+
+
+        //Rotina para carregar o TypeAhead (autocomplete) dos produtos
+        //Como a solicitação era para pesquisar os produtos por nome ou código, utilizei um compomente chamado
+        //TypeAhead que já faz isso em um único local.
         var produtos = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -126,13 +142,13 @@
                 wildcard: '%QUERY'
             }
         });
-
+        //Rotina para limpar o select do serviço antes de se carregar os do próximo fornecedor selecionado
         function LimpaServico() {
             $("#SocodServico").empty();
-            $("#SocodServicote").append("<option class='form-select' value=''>Selecione um lote</option>");
+            $("#SocodServico").append("<option class='form-select' value=''>Selecione um lote</option>");
         }
 
-        //Função para carregar os serviços daquele fornecedor
+        //Rotina para carregar os serviços daquele fornecedor
         function CarregaServiços(codFornecedor) {
             LimpaServico();
             $.ajax({
@@ -148,14 +164,15 @@
                 }
             })
         }
-
+        //Rotina que define os dados para o TypeAhead e informa qual propriedade desses dados será
+        //utilizada para mostrar os itens. Nessa caso a prdescricao que é a descrição dos produtos
         $('#remoteProduto .typeahead').typeahead(null, {
-            name: 'best-pictures',
+            name: 'produtos',
             display: 'prdescricao',
             source: produtos
         })
 
-
+        //Rotina para carregar o TypeAhead (autocomplete) dos fornecedores
         var fornecedores = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -165,30 +182,34 @@
             }
         });
 
+        //Rotina executada ao clicar no radiobutton Produto, que mostra o campo Produto e oculta o de Serviço e fornecedor
         $("#radioProduto").click(function () {
             if ($(this).prop("checked")) {
                 $("#selectProduto").css("display", "block")
-                $("#selectFornecedor").css("display", "none")
                 $("#selectServico").css("display", "none")
 
             }
         })
-
+        //Rotina executada ao clicar no radiobutton Serviço, que mostra o campo Serviço e fornecedor e oculta o de Produto
         $("#radioServico").click(function () {
             if ($(this).prop("checked")) {
                 $("#selectProduto").css("display", "none")
                 $("#selectServico").css("display", "block")
-                $("#selectFornecedor").css("display", "block")
 
             }
         })
 
-        //Fornecedor
+        //Rotina que define os dados para o TypeAhead e informa qual propriedade desses dados será
+        //utilizada para mostrar os itens. Nessa caso a prdescfonomericao que é o nome do Fornecedor
         $('#remoteFornecedor .typeahead').typeahead(null, {
-            name: 'best-pictures',
+            name: 'fornecedor',
             display: 'fonome',
             source: fornecedores
         })
+        //Rotina que é executada ao selecionar um item no TypeAhead.
+        //Quando um fornecedor é selecionado, os serviços desse mesmo
+        // fornecedor são listados na combo de serviços e o campo ligado a Model
+        //SocodFornecedor recebe o código do fornecedor para que possa ser passado para a controller
 
         $("#fornecedor").on('typeahead:selected', function (evt, item) {
             console.log('teste', item)
@@ -196,10 +217,34 @@
             $("#SocodFornecedor").val(item.focodigo);
         })
 
+        //Rotina que é executada ao selecionar um item no TypeAhead.
+        //O campo ligado a Model SocodProduto recebe o código do produto para que possa ser passado para a controller
         $("#produto").on('typeahead:selected', function (evt, item) {
             console.log('teste', item)
             $("#SocodProduto").val(item.prcodigoEan);
         })
 
+        //Rotina que após carregar a página verifica se a solicitação foi de produto ou serviço
+        //e seta os valores dos TypeAheads e dos inputs ligados a Model.
+        $(document).ready(function () {
+            if (produto != "") {
+                $('#produto').typeahead('val', produto);
+                $("#radioProduto").click();
+                $("#SocodProduto").val(produto);
+
+            }
+            if (fornecedor != "") {
+                $('#fornecedor').typeahead('val', fornecedor);
+                CarregaServiços(fornecedor);
+                $("#radioServico").click();
+                setTimeout(
+                    function () {
+                        $("#SocodServico").val(servico);
+                    }, 1000);
+
+            }
+
+
+        });
     </script>
 }

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Teste_Aptidao_UGB.ViewModel.SaidaVM>
+
+@{
+    ViewData["Title"] = "Lista de saídas";
+}
+
+<h1>Lista de saídas</h1>
+<hr />
+<p>
+    <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-user-plus"></i>&nbsp; Nova saída</a>
+</p>
+<table id="table" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Codigo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodigoUsuario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeUsuario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodigoProduto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodigoDepartamento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Departamento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Codigo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodigoUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodigoProduto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodigoDepartamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Departamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantidade)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Codigo" class="btn-sm btn-primary"> <i class="fa fa-folder-open"></i>&nbsp; Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Codigo" class="btn-sm btn-danger"> <i class="fa fa-trash"></i>&nbsp; Excluir</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        //Rotina que configura a tabela para ser exibida como um DataTable.
+        ConfiguraDataTable("table")
+    </script>
+}

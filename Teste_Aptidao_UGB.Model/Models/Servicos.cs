@@ -17,6 +17,8 @@ public partial class Servicos
 
     public DateTime? SeprazoEntrega { get; set; }
 
+    public decimal? Sevalor { get; set; }
+
     public virtual Fornecedores SecodFornecedorNavigation { get; set; }
 
     public virtual ICollection<Solicitacao> Solicitacao { get; set; } = new List<Solicitacao>();

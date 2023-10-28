@@ -1,4 +1,5 @@
-﻿@model Teste_Aptidao_UGB.Model.Models.Solicitacao
+﻿
+@model Teste_Aptidao_UGB.Model.Models.Solicitacao
 
 @{
     ViewData["Title"] = "Editar solicitação";
@@ -13,72 +14,87 @@
         <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-plus"></i>&nbsp; Nova solicitação</a>
     }
 }
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SocodProduto"></label>
-                <select class="form-select" asp-for="SocodProduto" asp-items="@ViewBag.SocodProduto">
-                    <option selected value="">Selecione o produto</option>
-                </select>
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Socodigo" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group row">
+        <div class="col-md" style="display: flex; gap: 10px; justify-content: center">
+            <input type="radio" id="radioProduto" name="radio">
+            <label for="radioProd">Produto</label>
+            <input type="radio" id="radioServico" name="radio">
+            <label for="radioServ">Serviço</label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4" id="selectProduto">
+            <label asp-for="SocodProduto"></label>
+            <div class="col-md" id="remoteProduto">
+                <input type="text" id="produto" class="form-control typeahead" />
+                <input asp-for="SocodProduto" type="hidden" class="form-control" />
                 <span asp-validation-for="SocodProduto" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Soquantidade"></label>
-                <input asp-for="Soquantidade" class="form-control" type="number" />
-                <span asp-validation-for="Soquantidade" class="text-danger"></span>
+        </div>
+        <div class="col-md-4" id="selectFornecedor" style="display: none">
+            <label asp-for="SocodFornecedor"></label>
+            <div class="col-md" id="remoteFornecedor">
+                <input id="fornecedor" type="text" class="form-control typeahead" />
+                <input asp-for="SocodFornecedor" type="hidden" class="form-control" />
+                <span asp-validation-for="SocodFornecedor" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="SocodDepartamento"></label>
-                <select class="form-select" asp-for="SocodDepartamento" asp-items="@ViewBag.SocodDepartamento">
-                    <option selected value="">Selecione o departamento</option>
-                </select>
-                <span asp-validation-for="SocodDepartamento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SocodUsuario"></label>
-                <select class="form-select" asp-for="SocodUsuario" asp-items="@ViewBag.SocodUsuario">
-                    <option selected value="">Selecione o usuário</option>
-                </select>
-                <span asp-validation-for="SocodUsuario" class="text-danger"></span>
-            </div>
+        </div>
+        <div class="col-md-4" id="selectServico">
+            <label asp-for="SocodServico"></label>
+            <select class="form-select" asp-for="SocodServico">
+                <option selected value="">Selecione o serviço</option>
+            </select>
+            <span asp-validation-for="SocodServico" class="text-danger"></span>
+        </div>
+       
+        <div class="col-md-4">
+            <label asp-for="SocodDepartamento"></label>
+            <select class="form-select" asp-for="SocodDepartamento" asp-items="@ViewBag.SocodDepartamento">
+                <option selected value="">Selecione o departamento</option>
+            </select>
+            <span asp-validation-for="SocodDepartamento" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label asp-for="SocodUsuario"></label>
+            <select class="form-select" asp-for="SocodUsuario" asp-items="@ViewBag.SocodUsuario">
+                <option selected value="">Selecione o usuário</option>
+            </select>
+            <span asp-validation-for="SocodUsuario" class="text-danger"></span>
+        </div>
+        <div class="col-md-2">
+            <label asp-for="Soquantidade"></label>
+            <input asp-for="Soquantidade" class="form-control" type="number" />
+            <span asp-validation-for="Soquantidade" class="text-danger"></span>
+        </div>
+        <div class="col-md-2">
             <div class="form-group">
                 <label asp-for="Sodata"></label>
                 <input asp-for="Sodata" class="form-control" type="datetime-local" />
                 <span asp-validation-for="Sodata" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="SocodServico"></label>
-                <select class="form-select" asp-for="SocodServico" asp-items="@ViewBag.SocodServico">
-                    <option selected value="">Selecione o serviço</option>
-                </select>
-                <span asp-validation-for="SocodServico" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SocodFornecedor"></label>
-                <select class="form-select" asp-for="SocodFornecedor" asp-items="@ViewBag.SocodFornecedor">
-                    <option selected value="">Selecione o fornecedor</option>
-                </select>
-                <span asp-validation-for="SocodFornecedor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Soobservacao"></label>
-                <input asp-for="Soobservacao" class="form-control" />
-                <span asp-validation-for="Soobservacao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Soconcluida"></label>
-                <input asp-for="Soconcluida" class="form-control" type="checkbox" />
-                <span asp-validation-for="Soconcluida" class="text-danger"></span>
-            </div>
-            <br />
-            <div class="form-group">
-                <button class="btn-sm btn-success"><i class="fa fa-save"></i>&nbsp; Salvar</button>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+
+    <div class="form-group row">
+        <div class="col-md">
+            <label asp-for="Soobservacao"></label>
+            <input asp-for="Soobservacao" class="form-control" />
+            <span asp-validation-for="Soobservacao" class="text-danger"></span>
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group">
+        <button class="btn-sm btn-success"><i class="fa fa-save"></i>&nbsp; Salvar</button>
+    </div>
+</form>
 
 <div>
     <a asp-action="List">Voltar para a lista</a>
@@ -92,14 +108,140 @@
     <script>
         var mensagem = "@ViewData["Mensagem"]";
         var mensagemErro = "@ViewData["MensagemErro"]";
+        const urlProdutos = "@Url.Action("SearchProduto", "AutoComplete")";
+        const urlFornecedores = "@Url.Action("SearchFornecedores", "AutoComplete")";
+        const urlCarregaServicos = "@Url.Action("ListarServicosPorFornecedor", "Servico")";
+        const produto = "@Model.SocodProduto";
+        const fornecedor = "@Model.SocodFornecedor";
+        const servico = "@Model.SocodServico";
     </script>
 
     <script>
+        //Lógica utilizada para exibir as mensagens de sucesso ou erro ao salvar os dados.
         if (mensagem != "") {
             MensagemOK(mensagem);
         }
         if (mensagemErro != "") {
             MensagemErro(mensagemErro);
         }
+
+
+
+        //Rotina para carregar o TypeAhead (autocomplete) dos produtos
+        //Como a solicitação era para pesquisar os produtos por nome ou código, utilizei um compomente chamado
+        //TypeAhead que já faz isso em um único local.
+        var produtos = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: urlProdutos + "?termo=%QUERY",
+                wildcard: '%QUERY'
+            }
+        });
+        //Rotina para limpar o select do serviço antes de se carregar os do próximo fornecedor selecionado
+        function LimpaServico() {
+            $("#SocodServico").empty();
+            $("#SocodServico").append("<option class='form-select' value=''>Selecione um lote</option>");
+        }
+
+        //Rotina para carregar os serviços daquele fornecedor
+        function CarregaServiços(codFornecedor) {
+            LimpaServico();
+            $.ajax({
+                type: "GET",
+                url: urlCarregaServicos + "?codFornecedor=" + codFornecedor,
+                dataType: "json",
+                success: function (data) {
+                    for (let item in data.data) {
+                        var servico = data.data[item];
+                        var option = `<option value="${servico.codigo}">${servico.nome}</option>`;
+                        $("#SocodServico").append(option);
+                    }
+                }
+            })
+        }
+        //Rotina que define os dados para o TypeAhead e informa qual propriedade desses dados será
+        //utilizada para mostrar os itens. Nessa caso a prdescricao que é a descrição dos produtos
+        $('#remoteProduto .typeahead').typeahead(null, {
+            name: 'produto',
+            display: 'prdescricao',
+            source: produtos
+        })
+
+        //Rotina para carregar o TypeAhead (autocomplete) dos fornecedores
+        var fornecedores = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: urlFornecedores + "?termo=%QUERY",
+                wildcard: '%QUERY'
+            }
+        });
+
+        //Rotina executada ao clicar no radiobutton Produto, que mostra o campo Produto e oculta o de Serviço e fornecedor
+        $("#radioProduto").click(function () {
+            if ($(this).prop("checked")) {
+                $("#selectProduto").css("display", "block")
+                $("#selectFornecedor").css("display", "none")
+                $("#selectServico").css("display", "none")
+
+            }
+        })
+        //Rotina executada ao clicar no radiobutton Serviço, que mostra o campo Serviço e fornecedor e oculta o de Produto
+        $("#radioServico").click(function () {
+            if ($(this).prop("checked")) {
+                $("#selectProduto").css("display", "none")
+                $("#selectServico").css("display", "block")
+                $("#selectFornecedor").css("display", "block")
+
+            }
+        })
+
+        //Rotina que define os dados para o TypeAhead e informa qual propriedade desses dados será
+        //utilizada para mostrar os itens. Nessa caso a prdescfonomericao que é o nome do Fornecedor
+        $('#remoteFornecedor .typeahead').typeahead(null, {
+            name: 'fornecedor',
+            display: 'fonome',
+            source: fornecedores
+        })
+        //Rotina que é executada ao selecionar um item no TypeAhead.
+        //Quando um fornecedor é selecionado, os serviços desse mesmo
+        // fornecedor são listados na combo de serviços e o campo ligado a Model
+        //SocodFornecedor recebe o código do fornecedor para que possa ser passado para a controller
+
+        $("#fornecedor").on('typeahead:selected', function (evt, item) {
+            console.log('teste', item)
+            CarregaServiços(item.focodigo);
+            $("#SocodFornecedor").val(item.focodigo);
+        })
+
+        //Rotina que é executada ao selecionar um item no TypeAhead.
+        //O campo ligado a Model SocodProduto recebe o código do produto para que possa ser passado para a controller
+        $("#produto").on('typeahead:selected', function (evt, item) {
+            console.log('teste', item)
+            $("#SocodProduto").val(item.prcodigoEan);
+        })
+        //Rotina que após carregar a página verifica se a solicitação foi de produto ou serviço
+        //e seta os valores dos TypeAheads e dos inputs ligados a Model.
+        $(document).ready(function () {
+            if (produto != "") {
+                $('#produto').typeahead('val', produto);
+                $("#radioProduto").click();
+                $("#SocodProduto").val(produto);
+
+            }
+            if (fornecedor != ""){
+                $('#fornecedor').typeahead('val', fornecedor);
+                CarregaServiços(fornecedor);
+                $("#radioServico").click(); 
+                setTimeout(
+                    function () {
+                        $("#SocodServico").val(servico);
+                    }, 1000);
+               
+            }
+            
+
+        });
     </script>
 }

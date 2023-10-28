@@ -8,7 +8,7 @@ namespace Teste_Aptidao_UGB.Model.Repositories
     {
         public async Task<List<Produtos>> ListarProdutoPorCodigoOuDescricao(string termo)
         {
-            return await _context.Produtos.Where(x => x.Prdescricao.Contains(termo)).ToListAsync();
+            return await _context.Produtos.Where(x => x.Prdescricao.Contains(termo) || x.PrcodigoEan.ToString().Contains(termo)).ToListAsync();
         }
     }
-}
+} 
