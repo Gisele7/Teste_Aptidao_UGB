@@ -86,16 +86,26 @@ namespace Teste_Aptidao_UGB.Controllers
             return View(list);
         }
 
-        public async Task<IActionResult> Delete(int matricula)
+
+        /// <summary>
+        /// Método para excluir o dado, porém esse método é específico para a tela de consulta, pois aqui trabalho com JSON
+        /// e na view trabalho com Ajax e Jquery
+        /// </summary>
+        /// <param name="id">Código do usuário</param>
+        /// <returns></returns>
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                await _RepositoryUsuario.ExcluirAsync(matricula);
-                return RedirectToAction("List", new { mensagem = Mensagens.MensagemExclusao });
+                await _RepositoryUsuario.ExcluirAsync(id);
+                ViewData["Mensagem"] = Mensagens.MensagemOK;
+                return RedirectToAction("List");
+
             }
             catch (Exception ex)
             {
-                return RedirectToAction("List", new { mensagem = ex.Message });
+                ViewData["Mensagem"] = Mensagens.MensagemExclusao;
+                return RedirectToAction("List");
             }
         }
     }

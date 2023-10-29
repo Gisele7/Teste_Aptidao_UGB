@@ -49,7 +49,7 @@ namespace Teste_Aptidao_UGB.ViewModel
         /// <summary>
         /// Método para retornar todos as entradas cadastradas
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Lista de Taks de EntradaVM</returns>
         public async static Task<List<EntradaVM>> ListEntradasAsync()
         {
             var db = new SOLICITACAO_MATERIAISContext();

@@ -25,7 +25,7 @@ namespace Teste_Aptidao_UGB.ViewModel
         /// <summary>
         /// Método para retornar todos os produtos cadastrados
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Lista de Tasks de ProdutoVM</returns>
         public async static Task<List<ProdutoVM>> ListProdutosAsync()
         {
             var db = new SOLICITACAO_MATERIAISContext();

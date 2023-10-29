@@ -44,7 +44,7 @@ namespace Teste_Aptidao_UGB.ViewModel
         /// <summary>
         /// Método para retornar todas as saídas cadastradas
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Listas de Tasks de SaidaVM</returns>
         public async static Task<List<SaidaVM>> ListSaidasAsync()
         {
             var db = new SOLICITACAO_MATERIAISContext();
@@ -64,6 +64,7 @@ namespace Teste_Aptidao_UGB.ViewModel
                     Departamento = db.Departamento.FirstOrDefault(x => x.Decodigo == item.SacodDepartamento).Dedescricao,
                     NomeUsuario = db.Usuarios.FirstOrDefault(x => x.Usmatricula == item.SacodUsuario).Usnome,
                     Produto = db.Produtos.FirstOrDefault(x => x.PrcodigoEan == item.SacodProduto).Prdescricao,
+                    Quantidade = item.Saquantidade
                 };
 
                 retorno.Add(saidaVM);

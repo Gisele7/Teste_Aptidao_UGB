@@ -1,14 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using Teste_Aptidao_UGB.Model.Models;
 
 namespace Teste_Aptidao_UGB.ViewModel
 {
     public class OrdemCompraVM
     {
+        [Display(Name ="Código")]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         public int Codigo { get; set; }
+        [Display(Name = "Fornecedor")]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         public int? CodigoFornecedor { get; set; }
+
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
+        public string EmailFornecedor { get; set; }
+
+        [Display(Name = "Fornecedor")]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string Fornecedor { get; set; }
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         public DateTime? Data { get; set; }
+
+        [Display(Name = "Solicitações")]
         public List<SolicitacaoVM> Solicitacoes { get; set; }
 
         public OrdemCompraVM()
@@ -18,7 +33,11 @@ namespace Teste_Aptidao_UGB.ViewModel
 
             Solicitacoes = listaSolicitacoes;
         }
-
+        /// <summary>
+        /// Retorna uma Ordem de Compra específica
+        /// </summary>
+        /// <param name="codigoOrdemCompra">Código da Ordem de Compra</param>
+        /// <returns>OrdemCompraVM</returns>
         public async static Task<OrdemCompraVM> SelecionaOrdemCompra(int codigoOrdemCompra)
         {
             var db = new SOLICITACAO_MATERIAISContext();
@@ -30,11 +49,15 @@ namespace Teste_Aptidao_UGB.ViewModel
                 Codigo = ordemCompra.Occodigo,
                 CodigoFornecedor = ordemCompra.OccodFornecedor,
                 Data = ordemCompra.Ocdata,
-                Fornecedor = db.Fornecedores.FirstOrDefault(x => x.Focodigo == ordemCompra.OccodFornecedor).Fonome,
+                Fornecedor = db.Fornecedores.FirstOrDefault(x => x.Focodigo == ordemCompra.OccodFornecedor)!.Fonome,
+                EmailFornecedor = db.Fornecedores.FirstOrDefault(x => x.Focodigo == ordemCompra.OccodFornecedor)!.Foemail,
                 Solicitacoes = listaSolicitacoes
             };
         }
-
+        /// <summary>
+        /// Rertorna todas as Ordens de Compra pela ViweModel
+        /// </summary>
+        /// <returns>TLista de Tasks de OrdemCompraVM</returns>
         public async static Task<List<OrdemCompraVM>> ListOrdensCompras()
         {
             var db = new SOLICITACAO_MATERIAISContext();
@@ -48,7 +71,8 @@ namespace Teste_Aptidao_UGB.ViewModel
                     Codigo = item.Occodigo,
                     CodigoFornecedor = item.OccodFornecedor,
                     Data = item.Ocdata,
-                    Fornecedor = db.Fornecedores.FirstOrDefault(x => x.Focodigo == item.OccodFornecedor).Fonome,
+                    EmailFornecedor = db.Fornecedores.FirstOrDefault(x => x.Focodigo == item.OccodFornecedor)!.Foemail,
+                    Fornecedor = db.Fornecedores.FirstOrDefault(x => x.Focodigo == item.OccodFornecedor)!.Fonome,
                 };
                 retorno.Add(ordemCompraVM);
             }

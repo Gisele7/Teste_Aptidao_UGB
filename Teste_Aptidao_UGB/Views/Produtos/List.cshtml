@@ -12,19 +12,19 @@
 <table id="table" class="table">
     <thead>
         <tr>
-            <th>
+            <th style="width: 40%">
                 @Html.DisplayNameFor(model => model.Descricao)
             </th>
-            <th>
+            <th style="width: 15%">
                 @Html.DisplayNameFor(model => model.PrecoUnitario)
             </th>
-            <th>
+            <th style="width: 15%">
                 @Html.DisplayNameFor(model => model.CotaMinimaEstoque)
             </th>
-            <th>
+            <th style="width: 15%">
                 @Html.DisplayNameFor(model => model.Unidade)
             </th>
-            <th></th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -46,7 +46,6 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.CodigoProduto" class="btn-sm btn-primary"> <i class="fa fa-folder-open"></i>&nbsp; Editar</a>
                     <a asp-action="Delete" asp-route-id="@item.CodigoProduto" class="btn-sm btn-danger"> <i class="fa fa-trash"></i>&nbsp; Excluir</a>
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                 </td>
             </tr>
         }

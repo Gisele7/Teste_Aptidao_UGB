@@ -8,14 +8,13 @@ namespace Teste_Aptidao_UGB.Model.Models;
 
 public partial class SOLICITACAO_MATERIAISContext : DbContext
 {
-
-    public SOLICITACAO_MATERIAISContext()
-    {
-        
-    }
     public SOLICITACAO_MATERIAISContext(DbContextOptions<SOLICITACAO_MATERIAISContext> options)
         : base(options)
     {
+    }
+    public SOLICITACAO_MATERIAISContext()
+    {
+            
     }
 
     public virtual DbSet<Departamento> Departamento { get; set; }
@@ -45,7 +44,6 @@ public partial class SOLICITACAO_MATERIAISContext : DbContext
     public virtual DbSet<Usuarios> Usuarios { get; set; }
 
     public virtual DbSet<VwEstoque> VwEstoque { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)
 => optionsbuilder.UseSqlServer("data source=localhost\\SQLEXPRESS;Initial Catalog=SOLICITACAO_MATERIAIS;Integrated Security=True; TrustServerCertificate=True");
 

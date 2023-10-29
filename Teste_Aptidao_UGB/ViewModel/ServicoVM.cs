@@ -28,7 +28,7 @@ namespace Teste_Aptidao_UGB.ViewModel
         /// <summary>
         /// Método para retornar todos os serviços cadastrados
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Lista de Tasks de ServicoVM</returns>
         public async static Task<List<ServicoVM>> ListServicosAsync()
         {
             var db = new SOLICITACAO_MATERIAISContext();
@@ -36,6 +36,7 @@ namespace Teste_Aptidao_UGB.ViewModel
                           join fornecedor in db.Fornecedores on servico.SecodFornecedor equals fornecedor.Focodigo
                           select new ServicoVM
                           {
+                              Codigo =servico.Secodigo,
                               CodigoFornecedor = fornecedor.Focodigo,
                               Descricao = servico.Sedescricao,
                               Nome = servico.Senome,
@@ -43,7 +44,11 @@ namespace Teste_Aptidao_UGB.ViewModel
                               PrazoEntrega = servico.SeprazoEntrega
                           }).ToListAsync();
         }
-
+        /// <summary>
+        /// Lista todos os serviços de um determinado fornecedor
+        /// </summary>
+        /// <param name="codFornecedor">Código do Fornecedor</param>
+        /// <returns>Lista de Tasks de ServicoVM</returns>
         public async static Task<List<ServicoVM>> ListServicosPorFornecedorAsync(int codFornecedor)
         {
             var db = new SOLICITACAO_MATERIAISContext();

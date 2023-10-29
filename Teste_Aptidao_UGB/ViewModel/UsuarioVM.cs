@@ -1,13 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using Teste_Aptidao_UGB.Model.Models;
 
 namespace Teste_Aptidao_UGB.ViewModel
 {
     public class UsuarioVM
     {
+    
+        [Display(Name ="Matrícula")]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         public int Matricula { get; set; }
+
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string Nome { get; set;}
+
+        [Display(Name = "Departamento")]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         public int CodigoDepartamento{ get; set; }
+
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string Departamento{ get; set; }
 
         public UsuarioVM()

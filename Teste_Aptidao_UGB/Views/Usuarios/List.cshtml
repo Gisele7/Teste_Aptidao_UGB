@@ -12,16 +12,16 @@
 <table id="table" class="table">
     <thead>
         <tr>
-            <th>
+            <th style="width: 15%">
                 @Html.DisplayNameFor(model => model.Matricula)
             </th>
-            <th>
+            <th style="width: 40%">
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Departamento)
             </th>
-            <th></th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -39,7 +39,7 @@
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-matricula="@item.Matricula" class="btn-sm btn-primary"> <i class="fa fa-folder-open"></i>&nbsp; Editar</a>
-                    <a asp-action="Delete" asp-route-matricula="@item.Matricula" class="btn-sm btn-danger"> <i class="fa fa-trash"></i>&nbsp; Excluir</a>
+                    <a asp-action="Delete" asp-route-matricula="@item.Matricula" onclick="Excluir(@item.Matricula)" class="btn-sm btn-danger"> <i class="fa fa-trash"></i>&nbsp; Excluir</a>
                 </td>
             </tr>
         }
@@ -48,7 +48,33 @@
 
 @section Scripts{
     <script>
+        var urlDelete = "@Url.Action("Delete", "Usuario")";
+    </script>
+    <script>
         //Rotina que configura a tabela para ser exibida como um DataTable.
         ConfiguraDataTable("table")
+
+        //Função para excluir o dado
+        function Excluir(id) {
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Uma vez excluído, não poderá voltar atrás!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, excluir!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    urlDelete + "?id=" + id;
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    ).then
+                }
+            })
+        }
+
     </script>
 }

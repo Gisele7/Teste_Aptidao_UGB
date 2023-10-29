@@ -27,7 +27,7 @@
         <div class="col-md-4" id="selectProduto">
             <label asp-for="SocodProduto"></label>
             <div class="col-md" id="remoteProduto">
-                <input type="text" id="produto" class="form-control typeahead" />
+                <input type="text" id="produto" class="form-control typeahead" placeholder="Digite o código ou nome" />
                 <input asp-for="SocodProduto" type="hidden" class="form-control" />
                 <span asp-validation-for="SocodProduto" class="text-danger"></span>
             </div>
@@ -35,7 +35,7 @@
         <div class="col-md-4" id="selectFornecedor">
             <label asp-for="SocodFornecedor"></label>
             <div class="col-md" id="remoteFornecedor">
-                <input id="fornecedor" type="text" class="form-control typeahead" />
+                <input id="fornecedor" type="text" class="form-control typeahead" placeholder="Digite o nome" />
                 <input asp-for="SocodFornecedor" type="hidden" class="form-control" />
                 <span asp-validation-for="SocodFornecedor" class="text-danger"></span>
             </div>
@@ -73,7 +73,7 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label asp-for="Sodata"></label>
-                <input asp-for="Sodata" class="form-control" type="datetime-local" />
+                <input asp-for="Sodata" class="form-control" type="date" />
                 <span asp-validation-for="Sodata" class="text-danger"></span>
             </div>
         </div>
@@ -88,7 +88,7 @@
     </div>
 
     <br />
-    <div class="form-group">
+    <div class="form-group" style="display: flex; justify-content: center">
         <button class="btn-sm btn-success"><i class="fa fa-save"></i>&nbsp; Salvar</button>
     </div>
 </form>
@@ -227,6 +227,7 @@
         //Rotina que após carregar a página verifica se a solicitação foi de produto ou serviço
         //e seta os valores dos TypeAheads e dos inputs ligados a Model.
         $(document).ready(function () {
+            $("#radioProduto").click();
             if (produto != "") {
                 $('#produto').typeahead('val', produto);
                 $("#radioProduto").click();

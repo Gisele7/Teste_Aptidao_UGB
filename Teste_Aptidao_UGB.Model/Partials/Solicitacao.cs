@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Teste_Aptidao_UGB.Model.Attributues;
+
 
 namespace Teste_Aptidao_UGB.Model.Models
 {
@@ -17,7 +17,7 @@ namespace Teste_Aptidao_UGB.Model.Models
 
             public int Socodigo { get; set; }
             [Display(Name ="Produto")]
-            [RequiredIfAttribute("SocodServico", null)]
+        
             public long? SocodProduto { get; set; }
             [Display(Name = "Quantidade")]
             [Required(ErrorMessage = "Este campo é obrigatório.")]
@@ -31,9 +31,10 @@ namespace Teste_Aptidao_UGB.Model.Models
             [Display(Name = "Data")]
             [Required(ErrorMessage = "Este campo é obrigatório.")]
             public DateTime? Sodata { get; set; }
-            [RequiredIfAttribute("SocodProduto", null)]
-            public int? SocodServico { get; set; }
-
+          
+            [Display(Name = "Serviço")]
+            public int? SocodServico { get; set; }       
+            [Display(Name = "Fornecedor")]
             public int? SocodFornecedor { get; set; }
             [Display(Name = "Observação")]
          

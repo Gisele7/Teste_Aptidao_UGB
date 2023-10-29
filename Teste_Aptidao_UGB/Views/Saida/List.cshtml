@@ -7,28 +7,16 @@
 <h1>Lista de saídas</h1>
 <hr />
 <p>
-    <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-user-plus"></i>&nbsp; Nova saída</a>
+    <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-plus"></i>&nbsp; Nova saída</a>
 </p>
 <table id="table" class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Codigo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CodigoUsuario)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.NomeUsuario)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CodigoProduto)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Produto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CodigoDepartamento)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Departamento)
@@ -46,22 +34,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Codigo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CodigoUsuario)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.NomeUsuario)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CodigoProduto)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Produto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CodigoDepartamento)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Departamento)

@@ -14,80 +14,86 @@
     }
 }
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Codigo" class="control-label"></label>
-                <input asp-for="Codigo" class="form-control" readonly />
-                <span asp-validation-for="Codigo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Codigo" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-md">
                 <label asp-for="Nome" class="control-label"></label>
                 <input asp-for="Nome" class="form-control" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="col-md-4">
                 <label asp-for="CNPJ" class="control-label"></label>
                 <input asp-for="CNPJ" class="form-control" />
                 <span asp-validation-for="CNPJ" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="InscricaoEstadual" class="control-label"></label>
-                <input asp-for="InscricaoEstadual" class="form-control" />
-                <span asp-validation-for="InscricaoEstadual" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InscricaoMunicipal" class="control-label"></label>
-                <input asp-for="InscricaoMunicipal" class="form-control" />
-                <span asp-validation-for="InscricaoMunicipal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="col-md">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Bairro" class="control-label"></label>
-                <input asp-for="Bairro" class="form-control" />
-                <span asp-validation-for="Bairro" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-md">
+                <label asp-for="InscricaoEstadual" class="control-label"></label>
+                <input asp-for="InscricaoEstadual" class="form-control" />
+                <span asp-validation-for="InscricaoEstadual" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="col-md">
+                <label asp-for="InscricaoMunicipal" class="control-label"></label>
+                <input asp-for="InscricaoMunicipal" class="form-control" />
+                <span asp-validation-for="InscricaoMunicipal" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md">
                 <label asp-for="CEP" class="control-label"></label>
                 <input asp-for="CEP" class="form-control" />
                 <span asp-validation-for="CEP" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Logradouro" class="control-label"></label>
-                <input asp-for="Logradouro" class="form-control" />
-                <span asp-validation-for="Logradouro" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Complemento" class="control-label"></label>
-                <input asp-for="Complemento" class="form-control" />
-                <span asp-validation-for="Complemento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cidade" class="control-label"></label>
-                <input asp-for="Cidade" class="form-control" />
-                <span asp-validation-for="Cidade" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="col-md-4">
                 <label asp-for="Estado" class="control-label"></label>
                 <input asp-for="Estado" class="form-control" />
                 <span asp-validation-for="Estado" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="col-md-4">
+                <label asp-for="Cidade" class="control-label"></label>
+                <input asp-for="Cidade" class="form-control" />
+                <span asp-validation-for="Cidade" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label asp-for="Bairro" class="control-label"></label>
+                <input asp-for="Bairro" class="form-control" />
+                <span asp-validation-for="Bairro" class="text-danger"></span>
+            </div>
+            <div class="col-md">
+                <label asp-for="Logradouro" class="control-label"></label>
+                <input asp-for="Logradouro" class="form-control" />
+                <span asp-validation-for="Logradouro" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-2">
                 <label asp-for="Numero" class="control-label"></label>
                 <input asp-for="Numero" class="form-control" />
                 <span asp-validation-for="Numero" class="text-danger"></span>
             </div>
-            <br />
-            <div class="form-group">
-                <button class="btn-sm btn-success"><i class="fa fa-save"></i>&nbsp; Salvar</button>
+        </div>
+        <div class="form-group-row">
+            <div class="col-md">
+                <label asp-for="Complemento" class="control-label"></label>
+                <input asp-for="Complemento" class="form-control" />
+                <span asp-validation-for="Complemento" class="text-danger"></span>
             </div>
-        </form>
-    </div>
+        </div>
+        <br />
+        <div class="form-group" style="display: flex; justify-content: center">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
 </div>
 
 <div>
@@ -99,8 +105,8 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-             var mensagem = "@ViewData["Mensagem"]";
-             var mensagemErro = "@ViewData["MensagemErro"]";
+        var mensagem = "@ViewData["Mensagem"]";
+        var mensagemErro = "@ViewData["MensagemErro"]";
     </script>
     <script>
         //Lógica utilizada para exibir as mensagens de sucesso ou erro ao salvar os dados.
@@ -133,5 +139,4 @@
 
         })
     </script>
-}
 }

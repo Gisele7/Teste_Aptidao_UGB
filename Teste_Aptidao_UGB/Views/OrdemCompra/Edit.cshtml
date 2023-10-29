@@ -1,11 +1,11 @@
 ﻿@model Teste_Aptidao_UGB.ViewModel.OrdemCompraVM
 
 @{
-    ViewData["Title"] = "Nova ordem de compra";
+    ViewData["Title"] = "Editar ordem de compra";
 }
 
 
-<h4>Nova ordem de compra</h4>
+<h4>Editar ordem de compra</h4>
 <hr />
 @{
     if (ViewData["Mensagem"] != null)
@@ -14,39 +14,48 @@
     }
 }
 <div class="row">
-    <form asp-action="Create">
-        <input type="hidden" asp-for="Codigo" />
+    <form asp-action="Edit">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="CodigoFornecedor"></label>
-            <select class="form-select" asp-for="CodigoFornecedor" asp-items="@ViewBag.CodigoFornecedor">
-                <option selected value="">Selecione o fornecedor</option>
-            </select>
-            <span asp-validation-for="CodigoFornecedor" class="text-danger"></span>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label asp-for="CodigoFornecedor"></label>
+                <select required class="form-select" asp-for="CodigoFornecedor" asp-items="@ViewBag.codigofornecedor">
+                    <option selected value="">Selecione o fornecedor</option>
+                </select>
+                <span asp-validation-for="CodigoFornecedor" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label asp-for="Data" class="control-label"></label>
+                    <input required asp-for="Data" class="form-control" type="date" />
+                    <span asp-validation-for="Data" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md">
+                <label class="control-label">Número da solicitação</label>
+                <input id="numeroSolicitacao" class="form-control" type="number" />
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Data" class="control-label"></label>
-            <input asp-for="Data" class="form-control" type="date" />
-            <span asp-validation-for="Data" class="text-danger"></span>
+
+        <br />
+        <div class="form-group row">
+            <div class="col-md">
+                <label class="control-label">Produto</label>
+                <input type="text" id="produto" readonly />
+            </div>
+            <div class="col-md">
+                <label class="control-label">Quantidade</label>
+                <input type="number" id="quantidade" readonly />
+            </div>
+            <div class="col-md">
+                <label class="control-label">Valor unitário</label>
+                <input type="text" id="valorUnitario" readonly />
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">Número da solicitação</label>
-            <input id="numeroSolicitacao" class="form-control" type="number" />
-        </div>
-        <div class="form-group">
-            <label class="control-label">Produto</label>
-            <input type="text" id="produto" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label">Quantidade</label>
-            <input type="number" id="quantidade" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label">Valor unitário</label>
-            <input type="text" id="valorUnitario" readonly />
-        </div>
-        <div class="form-group">
-            <input type="button" value="Adicionar" class="btn btn-primary" onclick="Adicionar()" />
+        <br />
+        <div class="form-group" style="display: flex; justify-content: center">
+            <input type="button" value="Adicionar" class=" fa fa-plus btn btn-primary" onclick="Adicionar()" />
         </div>
 
         <table id="table" class="table">
@@ -90,23 +99,32 @@
                 {
                     <tr>
                         <td>
-                            <input type="hidden" name="Solicitacoes[@contador].Codigo" value="@item.Codigo" />
+                            <input type="hidden" name="Solicitacoes[@contador].Codigo" value="@item.Codigo" class="Codigo" />
                             @Html.DisplayFor(modelItem => item.Codigo)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.QuantidadeRequisitada)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Produto)
+                            @{
+                                if (item.IsServico == true)
+                                {
+                                    @Html.DisplayFor(modelItem => item.Servico)
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Produto)
+                                }
+                            }
                         </td>
                         <td>
-                            <input type="date" name="Solicitacoes[@contador].DataEntrega" class="DataEntrega" />
+                            <input type="date" id="Solicitacoes[@contador].DataEntrega" name="Solicitacoes[@contador].DataEntrega" class="DataEntrega validar" />
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Unidade)
                         </td>
                         <td>
-                            <input type="number" name="Solicitacoes[@contador].Quantidade" class="Quantidade" />
+                            <input type="number" id="Solicitacoes[@contador].Quantidade" name="Solicitacoes[@contador].Quantidade" class="Quantidade validar" />
                         </td>
                         <td>
                             <label id="valorUnitario" class="valorUnitario">@item.ValorUnitario</label>
@@ -125,12 +143,15 @@
                 }
             </tbody>
         </table>
-        <button>Solicitar ao fornecedor</button>
+        <div class="form-group" style="display: flex; justify-content: center">
+            <button type="submit" onclick="return ValidaPreenchimento()" class="btn btn-info">Solicitar ao fornecedor</button>
+        </div>
+        <button onclick="ValidaPreenchimento()" type="button">Solic</button>
     </form>
 </div>
 
 <div>
-    <a asp-action="Index">Voltar para a lista</a>
+    <a asp-action="List">Voltar para a lista</a>
 </div>
 
 @section Scripts {
@@ -141,16 +162,18 @@
     <script>
         var urlSolicitacao = "@Url.Action("GetSolicitacao", "ConsultaSolicitacao")";
         var dados;
+        var mensagem = "@ViewData["Mensagem"]";
+        var mensagemErro = "@ViewData["MensagemErro"]";
     </script>
-
+  
     <script>
         //Lógica utilizada para exibir as mensagens de sucesso ou erro ao salvar os dados.
-        //if (mensagem != "") {
-        //    MensagemOK(mensagem);
-        //}
-        //if (mensagemErro != "") {
-        //    MensagemErro(mensagemErro);
-        //}
+        if (mensagem != "") {
+           MensagemOK(mensagem);
+        }
+        if (mensagemErro != "") {
+           MensagemErro(mensagemErro);
+        }
 
         $("#numeroSolicitacao").on("blur", function () {
             var solicitacao = $(this).val();
@@ -176,8 +199,8 @@
         })
         function Adicionar() {
             var contador = $("#table tbody tr").length;
-            var linha = `<tr><td>${dados.codigo}<input type="hidden" name="Solicitacoes[${contador}].Codigo" value="${dados.codigo}" /></td><td>${dados.quantidadeRequisitada}</td><td>${dados.produto}</td><td><input type="date" class="DataEntrega" name="solicitacoes[${contador}].DataEntrega"/></td>` +
-                `<td>${dados.unidade}</td><td> <input type="number" class="Quantidade" name="Solicitacoes[${contador}].Quantidade"/></td><td><label id="valorUnitario">${dados.valorUnitario}</label></td><td><label id="valorTotal"></label></td>` +
+            var linha = `<tr><td>${dados.codigo}<input type="hidden" class="Codigo" name="Solicitacoes[${contador}].Codigo" value="${dados.codigo}" /></td><td>${dados.quantidadeRequisitada}</td><td>${dados.produto}</td><td><input type="date" class="DataEntrega validar" name="solicitacoes[${contador}].DataEntrega"/></td>` +
+                `<td>${dados.unidade}</td><td> <input type="number" class="Quantidade validar" name="Solicitacoes[${contador}].Quantidade"/></td><td><label id="valorUnitario">${dados.valorUnitario}</label></td><td><label id="valorTotal"></label></td>` +
                 `<td>${dados.codigoProduto}</td><td><button type="button" class="btn-sm btn-danger remover"><i class="fa fa-trash"></i>&nbsp; Excluir</button></td>`;
 
             $("#table tbody").append(linha);
@@ -188,10 +211,28 @@
             $(this).closest("tr").remove();
             var linhas = $("table tbody ").find("tr");
             linhas.each(function (index) {
-                $(this).find(".DataEntrega").attr("name", `Solicitacoes[${index}].DataEntrega`);
-                $(this).find(".Quantidade").attr("name", `Solicitacoes[${index}].Quantidade`);
+
+                console.log($(this).find(".DataEntrega").attr("name", `Solicitacoes[${index}].DataEntrega`), 'index', index);
+                $(this).find(".DataEntrega").attr("name", "Solicitacoes[" + index + "].DataEntrega");
+                $(this).find(".Quantidade").attr("name", "Solicitacoes[" + index + "].Quantidade");
+                $(this).find(".Codigo").attr("name", "Solicitacoes[" + index + "].Codigo");
+
             });
         });
+
+
+        function ValidaPreenchimento() {
+            var valido = true;
+            var linhas = $("table tbody ").find("tr");
+            linhas.each(function (index) {
+                if ($(this).find(".validar").val() == "") {
+                    $(this).find(".validar").addClass("borda");
+                    valido = false;
+                }
+
+            });
+            return valido;
+        };
 
 
 
