@@ -9,7 +9,7 @@ insert a request for materials for the Purchasing Sector**
 
 * I did all the necessary system crud.
 
-* I also used an API to search for the cep code and thus make the system more agile and interactive.
+* I also used an API to search for the zip code and thus make the system more agile and interactive.
 
 * In order not to have a greater output than what we have in stock, I made a VIEW in the sql server with all the necessary error handling.
 
