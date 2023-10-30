@@ -11,7 +11,7 @@ insert a request for materials for the Purchasing Sector**
 
 * I also used an API to search for the zip code and thus make the system more agile and interactive.
 
-* In order not to have a greater output than what we have in stock, I made a VIEW in the sql server with all the necessary error handling.
+* In order to have not a greater output than what we have in stock, I made a VIEW in the sql server with all the necessary error handling.
 
 * I used jquery to calculate total price
 
