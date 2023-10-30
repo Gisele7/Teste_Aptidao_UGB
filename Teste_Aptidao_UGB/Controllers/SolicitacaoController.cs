@@ -61,6 +61,10 @@ namespace Teste_Aptidao_UGB.Controllers
         {
             CarregaViewBag();
             var solicitacao = await _RepositorySolicitacao.SelecionarPkAsync(id);
+            ViewBag.fornecedor = _RepositoryFornecedor.SelecionarPk(solicitacao.SocodFornecedor).Fonome;
+            //como o typeahead nao seta o valor e mostra o label utilizo a viewbag para mostrar o nome do produto
+            if (solicitacao.SocodProduto != null)
+                ViewBag.produto = _RepositoryProdutos.SelecionarPk(solicitacao.SocodProduto).Prdescricao;
             return View(solicitacao);
         }
 
@@ -73,17 +77,26 @@ namespace Teste_Aptidao_UGB.Controllers
                 if (ModelState.IsValid)
                 {
                     await _RepositorySolicitacao.AlterarAsync(solicitacao);
+                    ViewBag.fornecedor = _RepositoryFornecedor.SelecionarPk(solicitacao.SocodFornecedor).Fonome;
                     ViewData["Mensagem"] = Mensagens.MensagemOK;
+                    if (solicitacao.SocodProduto != null)
+                        ViewBag.produto = _RepositoryProdutos.SelecionarPk(solicitacao.SocodProduto).Prdescricao;
                     return View(solicitacao);
                 }
                 else
                 {
+                    ViewBag.fornecedor = _RepositoryFornecedor.SelecionarPk(solicitacao.SocodFornecedor).Fonome;
+                    if (solicitacao.SocodProduto != null)
+                        ViewBag.produto = _RepositoryProdutos.SelecionarPk(solicitacao.SocodProduto).Prdescricao;
                     ViewData["MensagemErro"] = Mensagens.MensagemErro;
                     return View(solicitacao);
                 }
             }
             catch (Exception ex)
             {
+                ViewBag.fornecedor = _RepositoryFornecedor.SelecionarPk(solicitacao.SocodFornecedor).Fonome;
+                if (solicitacao.SocodProduto != null)
+                    ViewBag.produto = _RepositoryProdutos.SelecionarPk(solicitacao.SocodProduto).Prdescricao;
                 ViewData["MensagemErro"] = ex.Message;
                 return View(solicitacao);
             }

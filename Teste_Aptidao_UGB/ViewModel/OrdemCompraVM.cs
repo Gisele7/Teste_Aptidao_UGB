@@ -14,7 +14,7 @@ namespace Teste_Aptidao_UGB.ViewModel
         public int? CodigoFornecedor { get; set; }
 
         [Display(Name = "Email")]
-        [Required(ErrorMessage = "Este campo é obrigatório.")]
+
         public string EmailFornecedor { get; set; }
 
         [Display(Name = "Fornecedor")]

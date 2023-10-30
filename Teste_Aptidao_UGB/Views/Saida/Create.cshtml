@@ -27,7 +27,7 @@
             <div class="col-md-6">
                 <label asp-for="SacodProduto"></label>
                 <div class="col-md" id="remoteProduto">
-                    <input id="produto" type="text" class="form-control typeahead" />
+                    <input id="produto" type="text" class="form-control typeahead" placeholder="Digite parte do nome ou do código"/>
                     <input asp-for="SacodProduto" type="hidden" class="form-control" />
                     <span asp-validation-for="SacodProduto" class="text-danger"></span>
                 </div>
@@ -87,7 +87,8 @@
         const urlProdutos = "@Url.Action("SearchProduto", "AutoComplete")";
         var quantidadeEstoque = 0;
         var urlEstoque = "@Url.Action("GetEstoque", "Estoque")";
-        var codigoProduto = "@saida.SacodProduto";
+        var descProduto = "@ViewBag.produto";
+        var codProduto = "@saida.SacodProduto";
     </script>
 
     <script>
@@ -111,7 +112,12 @@
         });
 
 
-
+        function ConsultaEstoque(produto) {
+            $.get(urlEstoque + "?codigoProduto=" + produto, function (data) {
+                quantidadeEstoque = data.quantidade;
+                $("#txtQtd").val(data.quantidade);
+            })
+        }
         //Rotina que define os dados para o TypeAhead e informa qual propriedade desses dados será
         //utilizada para mostrar os itens. Nessa caso a prdescricao que é a descrição dos produtos
         $('#remoteProduto .typeahead').typeahead(null, {
@@ -124,10 +130,7 @@
         //O campo ligado a Model SacodProduto recebe o código do produto para que possa ser passado para a controller
         $("#produto").on('typeahead:selected', function (evt, item) {
             $("#SacodProduto").val(item.prcodigoEan);
-            $.get(urlEstoque + "?codigoProduto=" + item.prcodigoEan, function (data) {
-                quantidadeEstoque = data.quantidade;
-                $("#txtQtd").val(data.quantidade);
-            })
+            ConsultaEstoque(item.prcodigoEan);
         })
 
 
@@ -149,9 +152,10 @@
         //Rotina que após carregar a página
         //Seta os valores dos TypeAheads e dos inputs ligados a Model.
         $(document).ready(function () {
-            if (codigoProduto != "") {
-                $('#produto').typeahead('val', codigoProduto);
-                $("#SacodProduto").val(codigoProduto);
+            if (codProduto != "") {
+                $('#produto').val(descProduto);
+                ConsultaEstoque(codProduto);
+              
             }
         })
 

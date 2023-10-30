@@ -25,6 +25,7 @@ namespace Teste_Aptidao_UGB.ViewModel
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string InscricaoMunicipal { get; set; }
 
+        [DataType(DataType.EmailAddress, ErrorMessage = "E-mail em formato inválido.")]
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string Email { get; set; }
 

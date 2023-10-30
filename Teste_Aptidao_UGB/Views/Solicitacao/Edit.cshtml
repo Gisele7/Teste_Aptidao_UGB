@@ -11,11 +11,12 @@
 @{
     if (ViewData["Mensagem"] != null)
     {
-        <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-plus"></i>&nbsp; Nova solicitação</a>
+    <a asp-action="Create" class="btn-sm btn-primary"> <i class="fa fa-plus"></i>&nbsp; Nova solicitação</a>
     }
 }
 <form asp-action="Edit">
     <input type="hidden" asp-for="Socodigo" />
+    <input type="hidden" asp-for="Soconcluida" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group row">
         <div class="col-md" style="display: flex; gap: 10px; justify-content: center">
@@ -34,7 +35,7 @@
                 <span asp-validation-for="SocodProduto" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-md-4" id="selectFornecedor" style="display: none">
+        <div class="col-md-4" id="selectFornecedor">
             <label asp-for="SocodFornecedor"></label>
             <div class="col-md" id="remoteFornecedor">
                 <input id="fornecedor" type="text" class="form-control typeahead" />
@@ -112,8 +113,10 @@
         const urlFornecedores = "@Url.Action("SearchFornecedores", "AutoComplete")";
         const urlCarregaServicos = "@Url.Action("ListarServicosPorFornecedor", "Servico")";
         const produto = "@Model.SocodProduto";
-        const fornecedor = "@Model.SocodFornecedor";
+        const fornecedor = "@ViewBag.fornecedor";
+        const codFornecedor = "@Model.SocodFornecedor";
         const servico = "@Model.SocodServico";
+        const descricaoProduto = "@ViewBag.produto";
     </script>
 
     <script>
@@ -182,7 +185,7 @@
         $("#radioProduto").click(function () {
             if ($(this).prop("checked")) {
                 $("#selectProduto").css("display", "block")
-                $("#selectFornecedor").css("display", "none")
+     
                 $("#selectServico").css("display", "none")
 
             }
@@ -192,7 +195,7 @@
             if ($(this).prop("checked")) {
                 $("#selectProduto").css("display", "none")
                 $("#selectServico").css("display", "block")
-                $("#selectFornecedor").css("display", "block")
+         
 
             }
         })
@@ -224,23 +227,23 @@
         //Rotina que após carregar a página verifica se a solicitação foi de produto ou serviço
         //e seta os valores dos TypeAheads e dos inputs ligados a Model.
         $(document).ready(function () {
+            $("#fornecedor").val(fornecedor);
             if (produto != "") {
-                $('#produto').typeahead('val', produto);
+              $('#produto').val(descricaoProduto);
                 $("#radioProduto").click();
-                $("#SocodProduto").val(produto);
+             $("#SocodProduto").val(produto);
 
             }
-            if (fornecedor != ""){
-                $('#fornecedor').typeahead('val', fornecedor);
-                CarregaServiços(fornecedor);
-                $("#radioServico").click(); 
+            if (servico != "") {
+                CarregaServiços(codFornecedor);
+                $("#radioServico").click();
                 setTimeout(
                     function () {
                         $("#SocodServico").val(servico);
-                    }, 1000);
-               
+                    }, 500);
+
             }
-            
+          
 
         });
     </script>

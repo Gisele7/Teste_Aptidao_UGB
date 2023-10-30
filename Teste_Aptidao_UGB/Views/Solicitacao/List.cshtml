@@ -16,13 +16,14 @@
                 @Html.DisplayNameFor(model => model.Fornecedor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CodigoProduto)
+                Código EAN
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Produto)
+
+                Produto/Serviço
             </th>
             <th style="width: 5%">
-           Qtd
+                Qtd
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Departamento)
@@ -54,7 +55,18 @@
                     @Html.DisplayFor(modelItem => item.CodigoProduto)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Produto)
+                    @{
+                        if (item.Produto == "")
+                        {
+                            @Html.DisplayFor(modelItem => item.Produto)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.Servico)
+                        }
+                    }
+                   
+                 
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantidade)

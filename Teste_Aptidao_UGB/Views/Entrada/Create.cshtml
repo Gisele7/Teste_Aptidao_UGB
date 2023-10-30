@@ -48,7 +48,7 @@
             <div class="col-md-8">
                 <label asp-for="EtcodProduto"></label>
                 <div class="col-md" id="remoteProduto">
-                    <input id="produto" type="text" class="form-control typeahead" />
+                    <input id="produto" type="text" class="form-control typeahead" placeholder="Informe parte do nome ou código"/>
                     <input asp-for="EtcodProduto" type="hidden" class="form-control" />
                     <span asp-validation-for="EtcodProduto" class="text-danger"></span>
                 </div>
@@ -69,13 +69,6 @@
 <div>
     <a asp-action="List">Voltar para a lista</a>
 </div>
-@{
-    var entrada = new Entrada();
-    if (Model != null)
-    {
-        entrada = Model;
-    }
-}
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -85,7 +78,8 @@
         var mensagem = "@ViewData["Mensagem"]";
         var mensagemErro = "@ViewData["MensagemErro"]";
         const urlProdutos = "@Url.Action("SearchProduto", "AutoComplete")";
-        const produto = "@entrada.EtcodProduto";
+        const produto = "@ViewBag.produto";
+       
     </script>
 
     <script>
@@ -130,7 +124,7 @@
         //Seta os valores dos TypeAheads e dos inputs ligados a Model.
         $(document).ready(function () {
             if (produto != "") {
-                $('#EtcodProduto').typeahead('val', produto);
+                $('#produto').val(produto);
             }
         });
 

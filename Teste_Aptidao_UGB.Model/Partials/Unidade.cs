@@ -15,7 +15,7 @@ namespace Teste_Aptidao_UGB.Model.Models
         {
             [Display(Name = "Código")]
             public int Uncodigo { get; set; }
-            [Display(Name = "Código")]
+            [Display(Name = "Descrição")]
             [Required(ErrorMessage = "Este campo é obrigatório.")]
             public string Undescricao { get; set; }
         }

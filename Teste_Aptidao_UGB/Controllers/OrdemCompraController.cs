@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Drawing;
 using System.Text;
 using Teste_Aptidao_UGB.Helpers;
 using Teste_Aptidao_UGB.Model.Models;
@@ -63,9 +64,10 @@ namespace Teste_Aptidao_UGB.Controllers
                     }
 
                      _RepositoryOrdemCompra.Incluir(ordemCompra, ordemCompra.OrdemCompraSolicitacao.ToList());
+                    ordemCompraVM.EmailFornecedor = _RepositoryFornecedor.SelecionarPk(ordemCompraVM.CodigoFornecedor).Foemail;
                     ViewData["Mensagem"] = Mensagens.MensagemOK;
 
-                    await  EnviarEmail(ordemCompraVM);
+                    await  EnviarEmail(ordemCompra);
                     return RedirectToAction("Edit", new {id = ordemCompra.Occodigo, mensagem = Mensagens.MensagemOK, erro = false} );
                 }
             }
@@ -75,37 +77,38 @@ namespace Teste_Aptidao_UGB.Controllers
                 return View(ordemCompraVM);
             }
         }
-        public async Task EnviarEmail(OrdemCompraVM ordemCompraVM)
+        public async Task EnviarEmail(OrdemCompra ordemCompra)
         {
             var mailRequest = new EmailRequest()
             {
-                Body = MontarCorpoEmail(ordemCompraVM),
+                Body = MontarCorpoEmail(ordemCompra),
                 Subject = "Ordem de Compra",
-                ToEmail= ordemCompraVM.EmailFornecedor
+                ToEmail= _RepositoryFornecedor.SelecionarPk(ordemCompra.OccodFornecedor).Foemail
             };
 
             await _mailService.SendEmailAsync(mailRequest);
 
         }
-        public string MontarCorpoEmail(OrdemCompraVM ordemCompraVM)
+        public string MontarCorpoEmail(OrdemCompra ordemCompra)
         {
 
             StringBuilder corpoEmail = new StringBuilder();
+            var solicitacoes =  SolicitacaoVM.ListSolicitacoesPorOrdemCompra(ordemCompra.Occodigo);
 
             corpoEmail.AppendLine(" ");
             corpoEmail.AppendLine("<br><br><p><b> Não responda este email, ela é uma notificação automática.</b></p>");
-            corpoEmail.AppendLine("<span style='font-align:left;font-size:12px'> Ordem de Compra</span><br />");
-            corpoEmail.AppendLine("<span style='font-align:left;font-size:12px'> Itens</span><br />");
-            foreach (var item in ordemCompraVM.Solicitacoes)
+            corpoEmail.AppendLine("<span style='font-size: large; font-weight: bold;'>Solicitação de Compras</span>");
+            corpoEmail.AppendLine("<table><tr><td>Produto</td><td>Quantidade</td><td>Valor</td><td>Valor Total</td></tr><tr></tr>");
+          
+            foreach (var item in solicitacoes)
             {
-                corpoEmail.AppendLine($"<span style='font-align:left;font-size:12px'>{item.Produto}</span><br />");
-                corpoEmail.AppendLine($"<span style='font-align:left;font-size:12px'>{item.Quantidade}</span><br />");
-                corpoEmail.AppendLine($"<span style='font-align:left;font-size:12px'>{item.ValorUnitario}</span><br />");
-                corpoEmail.AppendLine($"<span style='font-align:left;font-size:12px'>{item.ValorTotal}</span><br />");
+                var produto = item.IsServico ? item.Servico : item.Produto;
+                corpoEmail.AppendLine($"<tr><td>{produto}</td><td>{item.Quantidade}</td><td>{item.ValorUnitario}</td><td>{item.ValorTotal}</td></tr><tr></tr>");
+               
             }
-           
-           
-            
+            corpoEmail.AppendLine("</table>");
+
+
             return corpoEmail.ToString();
         }
 
@@ -155,9 +158,10 @@ namespace Teste_Aptidao_UGB.Controllers
                     }
 
                     await _RepositoryOrdemCompra.AlterarAsync(ordemCompra, ordemCompra.OrdemCompraSolicitacao.ToList());
-                    await EnviarEmail(ordemCompraVM);
+                    ordemCompraVM.EmailFornecedor = _RepositoryFornecedor.SelecionarPk(ordemCompraVM.CodigoFornecedor).Foemail;
+                    await EnviarEmail(ordemCompra);
                     ViewData["Mensagem"] = Mensagens.MensagemOK;
-                    return View(ordemCompraVM);
+                    return RedirectToAction("Edit", new { id = ordemCompra.Occodigo, mensagem = Mensagens.MensagemOK, erro = false });
                 }
             }
             catch (Exception ex)

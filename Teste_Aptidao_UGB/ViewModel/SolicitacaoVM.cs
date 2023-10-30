@@ -104,13 +104,13 @@ namespace Teste_Aptidao_UGB.ViewModel
                 solicitacaoVM.Concluida = solicitacao.Soconcluida;
                 solicitacaoVM.Data = solicitacao.Sodata;
                 solicitacaoVM.Departamento = db.Departamento.FirstOrDefault(x => x.Decodigo == solicitacao.SocodDepartamento).Dedescricao;
-                solicitacaoVM.Fornecedor = solicitacao.SocodFornecedor == null ? "" : db.Fornecedores.FirstOrDefault(x => x.Focodigo == solicitacao.SocodFornecedor).Fonome;
+                solicitacaoVM.Fornecedor = solicitacao.SocodFornecedor == null ? null : db.Fornecedores.FirstOrDefault(x => x.Focodigo == solicitacao.SocodFornecedor).Fonome;
                 solicitacaoVM.MatriculaUsuario = (int)solicitacao.SocodUsuario;
                 solicitacaoVM.Observacao = solicitacao.Soobservacao;
-                solicitacaoVM.Produto = solicitacao.SocodProduto == null ? "" : db.Produtos.FirstOrDefault(x => x.PrcodigoEan == solicitacao.SocodProduto).Prdescricao;
+                solicitacaoVM.Produto = solicitacao.SocodProduto == null ? null : db.Produtos.FirstOrDefault(x => x.PrcodigoEan == solicitacao.SocodProduto).Prdescricao;
                 solicitacaoVM.Quantidade = solicitacao.Soquantidade;
-                solicitacaoVM.Servico = solicitacao.SocodServico == null ? "" : db.Servicos.FirstOrDefault(x => x.Secodigo == solicitacao.SocodServico).Sedescricao;
-                solicitacaoVM.Usuario = produto == null ? "" : db.Usuarios.FirstOrDefault(x => x.Usmatricula == solicitacao.SocodUsuario).Usnome;
+                solicitacaoVM.Servico = solicitacao.SocodServico == null ? null : db.Servicos.FirstOrDefault(x => x.Secodigo == solicitacao.SocodServico).Sedescricao;
+                solicitacaoVM.Usuario = db.Usuarios.FirstOrDefault(x => x.Usmatricula == solicitacao.SocodUsuario).Usnome;
                 solicitacaoVM.Unidade = produto == null ? "" :  db.Unidade.FirstOrDefault(x => x.Uncodigo == produto.PrcodUnidade).Undescricao;
                 solicitacaoVM.ValorUnitario = produto != null ? produto.PrprecoUnitario : servico.Sevalor;
                 solicitacaoVM.ValorTotal = produto == null ? 0 : produto.PrprecoUnitario * solicitacao.Soquantidade;
@@ -197,15 +197,58 @@ namespace Teste_Aptidao_UGB.ViewModel
                 solicitacaoVM.Usuario = produto == null ? "" : db.Usuarios.FirstOrDefault(x => x.Usmatricula == solicitacao.SocodUsuario).Usnome;
                 solicitacaoVM.Unidade = produto == null ? "" : db.Unidade.FirstOrDefault(x => x.Uncodigo == produto.PrcodUnidade).Undescricao;
                 solicitacaoVM.ValorUnitario = produto != null ? produto.PrprecoUnitario : servico.Sevalor;
-                solicitacaoVM.ValorTotal = produto == null ? 0 : produto.PrprecoUnitario * item.Osquantidade ;
+                solicitacaoVM.ValorTotal = produto == null ? servico.Sevalor * item.Osquantidade : produto.PrprecoUnitario * item.Osquantidade ;
                 solicitacaoVM.QuantidadeRequisitada = solicitacao.Soquantidade;
                 solicitacaoVM.DataEntrega = db.OrdemCompraSolicitacao.FirstOrDefault(x => x.Oscodigo == item.Oscodigo).OsdataEntrega;
-
+                solicitacaoVM.IsServico = produto == null ? true : false;
                 retorno.Add(solicitacaoVM);
             }
 
             return retorno;
         }
 
+
+
+        public  static List<SolicitacaoVM> ListSolicitacoesPorOrdemCompra(int codigoOrdemCompra)
+        {
+            var db = new SOLICITACAO_MATERIAISContext();
+            var retorno = new List<SolicitacaoVM>();
+
+            var ordemCompraSolicitacoes =  db.OrdemCompraSolicitacao.Where(x => x.OscodOrdemCompra == codigoOrdemCompra).ToList();
+
+            foreach (var item in ordemCompraSolicitacoes)
+            {
+                var solicitacao =  db.Solicitacao.FirstOrDefault(x => x.Socodigo == item.OscodSolicitacao);
+                var produto = db.Produtos.FirstOrDefault(x => x.PrcodigoEan == solicitacao.SocodProduto);
+                var servico = db.Servicos.FirstOrDefault(x => x.Secodigo == solicitacao.SocodServico);
+
+                SolicitacaoVM solicitacaoVM = new SolicitacaoVM();
+
+                solicitacaoVM.Codigo = solicitacao.Socodigo;
+                solicitacaoVM.CodDepartamento = solicitacao.SocodDepartamento;
+                solicitacaoVM.CodFornecedor = solicitacao.SocodFornecedor;
+                solicitacaoVM.CodigoProduto = solicitacao.SocodProduto;
+                solicitacaoVM.CodigoServico = solicitacao.SocodServico;
+                solicitacaoVM.Concluida = solicitacao.Soconcluida;
+                solicitacaoVM.Data = solicitacao.Sodata;
+                solicitacaoVM.Departamento = db.Departamento.FirstOrDefault(x => x.Decodigo == solicitacao.SocodDepartamento).Dedescricao;
+                solicitacaoVM.Fornecedor = solicitacao.SocodFornecedor == null ? "" : db.Fornecedores.FirstOrDefault(x => x.Focodigo == solicitacao.SocodFornecedor).Fonome;
+                solicitacaoVM.MatriculaUsuario = (int)solicitacao.SocodUsuario;
+                solicitacaoVM.Observacao = solicitacao.Soobservacao;
+                solicitacaoVM.Produto = solicitacao.SocodProduto == null ? "" : db.Produtos.FirstOrDefault(x => x.PrcodigoEan == solicitacao.SocodProduto).Prdescricao;
+                solicitacaoVM.Quantidade = db.OrdemCompraSolicitacao.FirstOrDefault(x => x.Oscodigo == item.Oscodigo).Osquantidade;
+                solicitacaoVM.Servico = solicitacao.SocodServico == null ? "" : db.Servicos.FirstOrDefault(x => x.Secodigo == solicitacao.SocodServico).Sedescricao;
+                solicitacaoVM.Usuario = produto == null ? "" : db.Usuarios.FirstOrDefault(x => x.Usmatricula == solicitacao.SocodUsuario).Usnome;
+                solicitacaoVM.Unidade = produto == null ? "" : db.Unidade.FirstOrDefault(x => x.Uncodigo == produto.PrcodUnidade).Undescricao;
+                solicitacaoVM.ValorUnitario = produto != null ? produto.PrprecoUnitario : servico.Sevalor;
+                solicitacaoVM.ValorTotal = produto == null ? servico.Sevalor * item.Osquantidade : produto.PrprecoUnitario * item.Osquantidade;
+                solicitacaoVM.QuantidadeRequisitada = solicitacao.Soquantidade;
+                solicitacaoVM.DataEntrega = db.OrdemCompraSolicitacao.FirstOrDefault(x => x.Oscodigo == item.Oscodigo).OsdataEntrega;
+                solicitacaoVM.IsServico = produto == null ? true : false;
+                retorno.Add(solicitacaoVM);
+            }
+
+            return retorno;
+        }
     }
 }

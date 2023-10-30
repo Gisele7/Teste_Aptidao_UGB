@@ -39,18 +39,22 @@ namespace Teste_Aptidao_UGB.Controllers
                 if (ModelState.IsValid)
                 {
                     await _RepositorySaida.IncluirAsync(saida);
+                    ViewBag.produto = _RepositoryProdutos.SelecionarPk(saida.SacodProduto).Prdescricao;
                     ViewData["Mensagem"] = Mensagens.MensagemOK;
                     return View(saida);
                 }
                 else
                 {
+                    ViewBag.produto = _RepositoryProdutos.SelecionarPk(saida.SacodProduto).Prdescricao;
                     ViewData["MensagemErro"] = Mensagens.MensagemErro;
                     return View(saida);
                 }
             }
             catch (Exception ex)
             {
-                return View(ex);
+                ViewBag.produto = _RepositoryProdutos.SelecionarPk(saida.SacodProduto).Prdescricao;
+                ViewData["MensagemErro"] =ex.Message;
+                return View(saida);
             }
         }
 
@@ -58,6 +62,7 @@ namespace Teste_Aptidao_UGB.Controllers
         {
             CarregaViewBag();
             var saida = await _RepositorySaida.SelecionarPkAsync(id);
+            ViewBag.produto = _RepositoryProdutos.SelecionarPk(saida.SacodProduto).Prdescricao;
             return View(saida);
         }
 
@@ -70,18 +75,22 @@ namespace Teste_Aptidao_UGB.Controllers
                 if (ModelState.IsValid)
                 {
                     await _RepositorySaida.AlterarAsync(saida);
+                    ViewBag.produto = _RepositoryProdutos.SelecionarPk(saida.SacodProduto).Prdescricao;
                     ViewData["Mensagem"] = Mensagens.MensagemOK;
                     return View(saida);
                 }
                 else
                 {
+                    ViewBag.produto = _RepositoryProdutos.SelecionarPk(saida.SacodProduto).Prdescricao;
                     ViewData["MensagemErro"] = Mensagens.MensagemErro;
                     return View(saida);
                 }
             }
             catch (Exception ex)
             {
-                return View(ex);
+                ViewBag.produto = _RepositoryProdutos.SelecionarPk(saida.SacodProduto).Prdescricao;
+                ViewData["MensagemErro"] = ex.Message;
+                return View(saida);
             }
         }
 

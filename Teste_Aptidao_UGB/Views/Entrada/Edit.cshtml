@@ -49,7 +49,7 @@
             <div class="col-md-8">
                 <label asp-for="EtcodProduto"></label>
                 <div class="col-md" id="remoteProduto">
-                    <input id="produto" type="text" class="form-control typeahead" />
+                    <input id="produto" type="text" class="form-control typeahead" placeholder="Informe parte do nome ou código" />
                     <input asp-for="EtcodProduto" type="hidden" class="form-control" />
                     <span asp-validation-for="EtcodProduto" class="text-danger"></span>
                 </div>
@@ -80,7 +80,7 @@
         var mensagem = "@ViewData["Mensagem"]";
         var mensagemErro = "@ViewData["MensagemErro"]";
         const urlProdutos = "@Url.Action("SearchProduto", "AutoComplete")";
-        const produto = "@Model.EtcodProduto";
+        const produto = "@ViewBag.produto";
     </script>
 
     <script>
@@ -121,9 +121,7 @@
 
         $(document).ready(function () {
             if (produto != "") {
-                $('#produto').typeahead('val', produto);
-                $("#EtcodProduto").val(produto);
-
+                $('#produto').val(produto);
             }
         });
     </script>
