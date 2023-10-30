@@ -13,7 +13,7 @@ insert a request for materials for the Purchasing Sector**
 
 * In order not to have a greater output than what we have in stock, I made a VIEW in the sql server with all the necessary error handling.
 
-* I calculated the total price with Jquery.
+* I used jquery to calculate total price
 
 ## 🆕 &nbsp;Technologies used
 <img align="center" alt="sqlserver" src="https://img.shields.io/badge/Microsoft_SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white" />
