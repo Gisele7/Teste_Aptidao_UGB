@@ -23,8 +23,10 @@ insert a request for materials for the Purchasing Sector**
 <img align="center" alt="css3" src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
 <img  align="center" alt="C#" src="https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white">
 
+## 💡 Suggestion
+- I would do the entire front-end with ReactJs and consume the API with it, so the system would be much faster
+
 ## ⁉️ How to execute this project? 
-<hr>
 
 - Run the database script 
 - Download the project
