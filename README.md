@@ -28,5 +28,5 @@ insert a request for materials for the Purchasing Sector**
 
 - Run the database script 
 - Download the project
-- If necessary, change the bank script in the application. I emphasize that I put it as 'localhost' so there will be no problems
+- If necessary, change the database script in the application. I emphasize that I put it as 'localhost' so there will be no problems
 - Ready!
